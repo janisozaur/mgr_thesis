@@ -18,6 +18,7 @@
 % ****************************************************************************************************
 \PassOptionsToPackage{utf8}{inputenc}
     \usepackage{inputenc}
+\usepackage[OT4]{polski}
 
 % ****************************************************************************************************
 % 1. Configure classicthesis for your needs here, e.g., remove "drafting" below
@@ -85,7 +86,7 @@
 % ********************************************************************
 %\PassOptionsToPackage{ngerman,american}{babel} % change this to your language(s), main language last
 % Spanish languages need extra options in order to work with this template
-%\PassOptionsToPackage{spanish,es-lcroman}{babel}
+\PassOptionsToPackage{english,polish}{babel}
     \usepackage{babel}
 
 \PassOptionsToPackage{square,numbers}{natbib}
@@ -104,6 +105,29 @@
 \usepackage{scrhack} % fix warnings when using KOMA with listings package
 \usepackage{xspace} % to get the spacing after macros right
 \usepackage{mparhack} % get marginpar right
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\floatname{algorithm}{Algorytm}
+\renewcommand{\listalgorithmname}{Spis algorytmów}
+\renewcommand{\algorithmicrequire}{\textbf{Asercje początkowe:}}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{moreverb}
+\let\verbatiminput=\verbatimtabinput
+\def\verbatimtabsize{4\relax}
+\usepackage{makeidx}
+\let\orgtheindex\theindex
+\let\orgendtheindex\endtheindex
+\def\theindex{%
+\def\twocolumn{\begin{multicols}{2}}%
+\def\onecolumn{}%
+\clearpage
+\orgtheindex
+}
+\def\endtheindex{%
+\end{multicols}%
+\orgendtheindex
+}
 \PassOptionsToPackage{printonlyused,smaller}{acronym}
     \usepackage{acronym} % nice macros for handling all acronyms in the thesis
 %\renewcommand*{\acsfont}[1]{\textssc{#1}} % for MinionPro
