@@ -1,0 +1,66 @@
+%************************************************
+\myChapter{Sprzęt}\label{ch:current_state}
+%************************************************
+
+Podstawowym elementem pracy było stworzenie sprzętu - urządzenia wejściowego, które będzie pozwalało na śledzenie ruchów palców użytkownika.
+
+Podczas projektowania powstało kilka dodatkowych założeń, które sprzęt powinien spełniać:
+\begin{itemize}
+ \item łatwość podłączenia - urządzenie powinno być możliwe do ,,zainstalowania'' w kilka chwil, najlepiej bez konieczności korzystania z narzędzi, podłączania zbyt wielu przewodów,
+ \item łatwość użytkowania - urządzenie powinno umożliwiać interakcję z komputerem osobom niezapoznanym z pracą, niekoniecznie posiadającym wiedzę techniczną dotyczącą zasady działania,
+ \item działanie w możliwie najróżniejszych warunkach - uwzględnienie spodziewanych warunków pracy urządzenia, tak aby nie przeszkadzały one w jego użytkowaniu,
+ \item prostota i modułowość - zmniejszenie kosztów produkcji poprzez zastosowanie możliwie prostych, łatwo dostępnych i sprawdzonych części połączonych w łatwo wymienialne moduły, co dodatkowo poprawi możliwość zastępowania części w wypadku ich uszkodzenia,
+\end{itemize}
+
+Większość postawionych celów udało się zrealizować.
+
+Urządzenie składa się z aluminiowej ramy, złożonej z czterech kątowników, z wywierconymi otworami na diody, fotodiody i elementy mocowania. Rama została zaprojektowana, aby pasowała do posiadanego monitora o przekątnej 24\". Do ramy przymocowanych jest 20 modułów - po 4 na krótsze i po 6 na dłuższe boki.
+
+Każdy z jednakowych modułów zawiera:
+\begin{itemize}
+ \item diodę emitującą światło w paśmie podczerwieni (TSAL6400),
+ \item 8 fotodiod reagujących na światło wymienionej wyżej diody,
+ \item ośmioportowy trzystanowy bufor (74LS541),
+ \item zestaw złącz, oporników wymaganych do funkcjonowania powyższych elementów.
+\end{itemize}
+
+Moduły połączone zostały 8-kanałowym interfejsem równoległym, dodatkowo z dwiema żyłami niosącymi zasilanie oraz osobnymi przewodami z sygnałami chip select (\textsmaller{\textoverline{CS}}) dla bufora oraz diody świecącej (\textsmaller{CS}).
+
+Dwie płytki drukowane, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję multipleksera portów - układy te to dekodery 4-do-16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów nić byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio. Zastosowanie takiego rozwiązania jest szybsze niż w przypadku interfejsu szeregowego, np. takiego jak I\textsuperscript{2}C lub SPI, jednak pociąga za sobą konieczność poprowadzenia sygnału \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} do każdego modułu osobno zamiast zintegrowania go w magistrali łączącej wszystkie moduły wygodną do podłączania tasiemką. Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawiania adresów logicznych modułów, chociaż pozwalałaby na dalsze rozszerzanie ramki o kolejne moduły, zwiększałaby koszty oraz wymagany nakład pracy, rozumianej zarówno przez tworzone oprogramowanie jak i ,,koszt'' działania programu, tj. czasu wymaganego do
+obsługi wybranego protokołu, zaważyły o ostatecznym wyborze rozwiązania równoległego.
+
+Wszystkie płytki PCB, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
+
+Stworzony sprzęt przeszedł kilka zmian: zarówno mikroprocesor jak i elementy konstrukcji były kilkukrotnie wymieniane.\\
+
+\section{Rewizja pierwsza}
+
+W pierwszej wersji wykorzystany został mikrokontroler z 16-bitowej rodziny MSP430: MSP430FG4618 znajdujący się w płytce Experimenter's Board. Pod kątem tego urządzenia projektowane były wszystkie interfejsy, uwzględniając przede wszystkim ilość dostępnych pinów oraz charakterystykę prądową.
+
+Niedopatrzeniem okazał się moduł komunikacji szeregowej UART, który operował w standardzie RS232/TTL\graffito{transistor-to-transistor logic, poziomy napięć i prądów przystosowane do niedługich połączeń pomiędzy układami}. Po podłączeniu adaptera USB-RS232 opartego o renomowany układ FTDI FT2232C okazało się w testach, że podczas dużego obciążenia hosta, pojedyncze bity ramki RS232 mogą się ,,zgubić'', tj.
+jedynki sporadycznie zastępowane były zerami. Ze względu na spodziewany charakter wykorzystywania pracy, np. podczas gier, oczekiwane było poprawne działanie także w warunkach wysokiego obciążenia, co dyskwalifikowało takie rozwiązanie.\\
+
+\section{Rewizja druga}
+
+Wymaganą stabilność transmisji danych miał zapewnić układ z tej samej rodziny, MSP430F2274 zawarty w płytce eZ430-RF2500. Płytka ta podłączana była do komputera bezpośrednio do portu USB. Testy szybko pokazały, że w urządzeniu brakuje dostatecznej ilości możliwych do wykorzystania pinów, pomimo stworzenia kolejnej wersji płytki interfejsu ramka $\leftrightarrow$ mikrokontroler, która ograniczała liczbę wymaganych połączeń z 24 do 20 - możliwie najniższej ilości niewymagającej połączeń szeregowych. Ponadto prędkość transmisji była sztucznie ograniczona do wartości 9600BPS, która nie zapewnia wymaganej przepustowości.\\
+
+\section{Rewizja trzecia}
+
+Ze względu na problemy z komunikacją, zdecydowałem się wykorzystać do pracy nowy układ z rdzeniem ARM Cortex-M4F, Texas Instruments LM4F120H5QR na płytce Stellaris Launchpad. Jest to 32-bitowy procesor, dostępny dopiero od listopada 2012, tj. kilka miesięcy po rozpoczęciu pisania pracy.\\
+
+\section{Rewizja czwarta}
+
+W tej wersji, zmieniona została konstrukcja samej ramki i modułów. Pierwotny projekt zakładał, że diody emitujące światło znajdować będą się w innej płaszczyżnie niż elemnty odbiorcze w celu uniknięcia problemu odbić. Moc wykorzystanych wtedy diod okazała się niewystarczająca do poprawnego oświetlenia odbiorników, przesunięte zostały więc one do płaszczyzny odbiorników.
+
+Z powodu nadal niedostatecznej ilości mocy diod, wymienione zostały na modele 5\texttimes\  mocniejsze, używające 120mA: TSAL6400. Dodane także zostały (do niektórych modułów) diody świecące w paśmie światła widzialnego, element nieprzewidziany w pierwotnym projekcie, co pozwoliło na prostsze debugowanie działania urządzenia.\\
+
+\section{Interfejs ramka $\leftrightarrow$ mikrokontroler}
+
+Interfejs zapewniający komunikację pomiędzy mikrokontrolerem, a ramką przeszedł tylko jedną wymianę, mającą na celu przede wszystkim wspomniane już ograniczenie ilości wymaganych pinów do obsługi.
+
+Pierwsza wersja oparta była na układach 74LS139 (podwójny selektor 1-z-4) oraz 74LS14 (inwerter), posiadała także zestaw diod LED i oporników pomocnych w debugowaniu. Działanie tego urządzenia było bardzo proste, polegało na wyborze odpowiedniego modułu (nadawczego i odbiorczego) poprzez ustawienie sygnałów \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} po wybraniu danego układu oraz ,,wysłania'' do niego adresu jednej z czterech linii wyjściowych. Sygnał \textsmaller{\textoverline{CS}} uzyskany został przez zastosowanie inwertera 74LS14.
+
+Druga, a zarazem finalna wersja tego sprzętu wykorzystuje w tym celu dwie płytki PCB, każda zawierająca po jednym układzie 74HC4514 oraz 74HC4515. Układy te to selektory 1-z-16, które różnią się tylko i wyłącznie wbudowanym inwerterem: 74HC4514 posiada wolną jedynkę, tzn. na wybranym wyjściu ustawiony zostanie stan wysoki, pozostałe linie mają stan niski; układ 74HC4515 posiada wolne zero - na każdej linii znajduje się inwerter.\\
+
+Zastosowanie dwóch selektorów 16-liniowych wymaga 6-ciu linii: 4 linie adresowe oraz po jednej linii \textsmaller{\textoverline{I}} (\textsmaller{\textoverline{Inhibit}}) dla każdego układu. Chociaż 20 użytych modułów można zaadresować za pomocą 5-bitowej przestrzeni adresowej zdolnej do obsługi maksymalnie 32 odbiorników, to należy zwrócić uwagę, że dekodery 5-do-32 nie istnieją. Ich konstrukcja, choć trywialna, dodawałaby zbędnego skomplikowania oraz kosztów, dając w zamian niewiele.
+Dodatkowo, posiadanie dedykowanych linii wybierających pozwala na przełączenie urządzenia w tryb ,,stand-by'', co w tym wypadku oznacza wyłączenie zarówno nadawania jak i odbierania. Podwójne elementy sterujące umożliwiają także ograniczenie długości potrzebnych przewodów, rozmiarów płytki (ze względu na zmniejszoną ilość wyjść) oraz konieczność mniejszej ingerencji w urządzenie w razie awarii.
