@@ -1,0 +1,34 @@
+%************************************************
+\myChapter{Oprogramowanie}\label{ch:software}
+%************************************************
+
+Oprogramowanie stworzone na potrzeby pracy składa się z dwóch elementów:
+\begin{itemize}
+ \item oprogramowania na komputer,
+ \item oprogramowania na mikrokontroler.\\
+\end{itemize}
+
+Większość zmian mikrokontrolera, opisywana w rozdziale \ref{ch:hardware}, pociągała za sobą przepisanie oprogramowania praktycznie od zera ze względu na rdzenie z kompletnie innych rodzin, inne dostępne moduły oraz inny sposób ich obsługi. Ilość tych zmian, a także dodatkowe utrudnienia pod postacią niedostępności debugowania, skomplikowanej instalacji słabo dostępnych i przestarzałych pakietów kompilatora skłoniły mnie do poszukania rozwiązania typu RTOS lub podobnego.
+W taki sposób znalazłem środowisko \textsc{Energia}, \textit{fork} środowiska \textsc{Arduino}\graffito{Programy w środowisku \textsc{Arduino} noszą nazwę ,,sketch''.}, oparty o toolchain \textsc{msp-gcc} oraz \textsc{arm-gcc}, pozwalający pisać programy w języku C++ ukrywając wiele szczegółowych operacji przed programistą jak np. konfiguracja stosu USB, pozwalając mu skoncentrować się na istocie tworzonego programu.\\
+
+\section{Protokół komunikacji}
+
+Komunikacja hosta z mikrokontrolerem odbywa się przez wirtualny port szeregowy (urządzenie \textsc{USB Communications Device Class, CDC}). Narzuca to kilka ograniczeń dotyczących możliwości protokołu, które należy uwzględnić podczas jego projektowania:
+\begin{itemize}
+ \item mikrokontroler będzie widoczny jako zwykłe urządzenie znakowe, należy więc zadbać, aby przesyłane dane były w postaci czytelnej także w zwykłym kliencie terminala,
+ \item sposób komunikacji musi uwzględniać możliwość synchronizacji, np. za pomocą specjalnego znaku, który nie pojawia się w innym przypadku,
+ \item protokół musi być możliwie zwięzły ze względu na ograniczoną przepustowość łącza,
+ \item komunikacja musi przebiegać dwukierunkowo (w trybie przynajmniej half-duplex).\\
+\end{itemize}
+
+Uwzględniając powyższe wytyczne, opracowałem protokół o następujących cechach:
+\begin{itemize}
+ \item Wszystkie przesyłane dane są pod postacią znaków kodu ASCII, zarówno z hosta do mikrokontrolera jak i z powrotem. Używane są trzy sposoby tłumaczenia danych z postaci binarnej na kod ASCII:
+ \begin{enumerate}
+  \item Numeryczny zapis dziesiętny \pauza liczby zapisywane są w systemie dziesiętnym po jednej stronie, druga strona konwertuje liczbę ponownie na system binarny.
+  \item Base64 \pauza System konwersji danych konwertujący ciąg 8-bitowych danych na ciąg 6-bitowych danych z określonym alfabetem.\graffito{\color{red}opisać w załączniku base64}
+  \item Zapis binarny z offsetem \pauza dla ograniczonych wielkości zmiennych zastosowałem przesunięcie wartości, które zapewnia ich prezentację w kodzie ASCII: do wartości zmiennej dodawany jest offset 'a', tak więc 'a' rozumiane jest jako 0, 'b' jako 1, itd.
+ \end{enumerate}
+ \item Do synchronizacji wykorzystany został znak o kodzie \textsc{0x0D}, czyli powrót karetki (\textit{carriage return}), dzięki czemu synchronizacja jest czytelnia zarówno dla komputera jak i człowieka.
+ \item Protokół został zaprojektowany w modulu klient-serwer, gdzie klient (komputer) odpytuje o dane serwer (mikrokontroler).\\
+\end{itemize}
