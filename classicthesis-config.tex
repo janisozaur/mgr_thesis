@@ -136,6 +136,21 @@
     \usepackage{acronym} % nice macros for handling all acronyms in the thesis
 %\renewcommand*{\acsfont}[1]{\textssc{#1}} % for MinionPro
 \renewcommand{\bflabel}[1]{{#1}\hfill} % fix the list of acronyms
+
+\newcommand{\executeiffilenewer}[3]{%
+  \IfFileExists{#2}{
+    \ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+    {\pdffilemoddate{#2}}>0%
+    {\immediate\write18{#3}}\fi%
+  }
+  {
+    \immediate\write18{#3}
+  }
+}
+\newcommand{\includesvg}[1]{%
+\executeiffilenewer{#1.svg}{#1.pdf}{inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex}%
+\input{#1.pdf_tex}%
+}
 % ****************************************************************************************************
 
 
