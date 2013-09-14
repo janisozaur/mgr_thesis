@@ -20,3 +20,45 @@ Rysunek~\ref{fig:scene_rays_sample} prezentuje schemat ramki z włączonym jedny
  \caption{Wizualizacja ramki. Czarne okręgi \ppauza fotodiody; czerwone \ppauza diody LED; czarne odcinki \ppauza odbierane promienie.}
  \label{fig:scene_rays_sample}
 \end{figure}
+
+Dane o promieniach zbierane są przez mikrokontroler, opakowywane w ramki protokołu, przesyłane do komputera i po rozpakowaniu poddawane dalszemu przetwarzaniu.
+
+Wykorzystując te informacje można stworzyć \textit{heatmapę} prezentującą w graficzny sposób rozkład gęstości przecięć promieni zasłoniętych. Daje to możliwość wizualnego rozpoznania konturów obiektów znajdujących się wewnątrz ramki.
+
+Wygodnym sposobem wyboru kolorów heatmapy jest wykorzystanie modelu barw HSL, przy czym wielkościom $s$ i $l$ zostały przypisane stałe wartości: $s = 1$, $l = 0.5$, natomiast parametr $h$ został dobrany w taki sposób, aby zmieniał się od $240^{\circ}$ (niebieski) do $0^{\circ}$ (czerwony) i reprezentował tym odpowiednio na ,,mało'' i ,,dużo'', przy czym dokładne wartości ze skali .
+
+Heatmapa generowana jest w następujący sposób:
+\begin{enumerate}
+ \item Scena, wnętrze reprezentacji ramki na komputerze, dzielona jest na kwadraty $A_{x,y}$ o zadanym boku $a$, a każdemu z nich przyporządkowywany jest licznik $C$ z początkową wartością $C_{i,j} = 0$,
+ \item pobierane kolejno są dane o zasłoniętych promieniach dla każdego z modułów,
+ \item dla każdego zasłoniętego promienia wyznaczany jest \textit{bounding box}, z dokładnością do $a$,
+ \item dla każdego kwadrata z bounding boksa promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
+ \item jeśli promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o 1,
+ \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowana jest największa wartość licznika $C$, $C_{max}$, względem której skalowane są kolory heatmapy,
+ \item dla każdego kwadrata $A_{i,j}$, jeśli $C_{i,j} > 0$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.
+\end{enumerate}
+
+Wybrane kroki powyższego algorytmu prezentują rysunki \ref{fig:scene_intersections}, \ref{fig:scene_rays}, \ref{fig:scene_heatmap} oraz \ref{fig:scene_heatmap_overlay}.
+
+\begin{sidewaysfigure}[tbh]
+  \myfloatalign
+  \subfloat[Wizualizacja sceny wraz z jednym promieniem, bounding boksem i wybranymi przecinanymi kwadratami]
+  {\label{fig:scene_intersections}
+  \def\svgwidth{0.47\linewidth}
+  \includesvg{gfx/scene_intersections}} \quad
+  \subfloat[Wizualizacja sceny z przykładowymi promieniami]
+  {\label{fig:scene_rays}%
+  \def\svgwidth{0.47\linewidth}
+  \includesvg{gfx/scene_rays}} \\
+  \subfloat[Wizualizacja sceny z heatmapą]
+  {\label{fig:scene_heatmap}
+  \def\svgwidth{0.47\linewidth}
+  \includesvg{gfx/scene_heatmap}} \quad
+  \subfloat[Wizualizacja sceny z heatmapą i nałożonymi promieniami]
+  {\label{fig:scene_heatmap_overlay}
+  \def\svgwidth{0.47\linewidth}
+  \includesvg{gfx/scene_heatmap_overlay}}
+  \caption[Algorytm konstrukcji heatmapy]{Algorytm konstrukcji heatmapy, $a$ = 10.}\label{fig:scene_heatmap_algorithm}
+\end{sidewaysfigure}
+
+\clearpage
