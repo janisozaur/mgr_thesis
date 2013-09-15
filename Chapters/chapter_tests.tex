@@ -1,0 +1,57 @@
+%************************************************
+\myChapter{Testy}\label{ch:tests}
+%************************************************
+
+W tym rozdziale zaprezentuję metody i wyniki testów.
+
+Testy dotyczą działania algorytmu wykorzystując przeszkody wirtualne, wygenerowane w programie oraz prawdziwe, o których informacja dostarczana jest z urządzenia. Przedstawione są też możliwości i ograniczenia sprzętu.\\
+
+Z uwagi na konstrukcję sprzętu, rozdzielczość sprzętu jest zmienna w zależności od miejsca. Dwuwymiarowy rozkład dokładności przentujący ilość przechodzących przez kwadrat o zadanym boku można uzyskać wykorzystując ulepszone algorytm heatmapy podczas gdy ramka zwraca same zera \pauza może być pusta lub wyłączona z prądu.
+
+Wspomniany rozkład dla $a = 5$ prezentuje rysunek~\ref{fig:scene_heatmap2_resolution_5}. Skala licznika $C$ jest następująca: $C_{min} = -15$, zaznaczone kolorem ciemnoniebieskim, $C_{max} = -1$, zaznaczone kolorem czerwonym. Przez pojedynczych białe kwadraty nie przechodzi żaden promień.
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_heatmap2_resolution_5}
+  }
+ }
+ \caption{Rozkład dokładności sprzętu, $a = 5$.}
+ \label{fig:scene_heatmap2_resolution_5}
+\end{figure}
+
+Łatwo dostrzec, że w pobliżu krańców ramki dokładność gwałtownie spada. Dzieje się tak ponieważ przekroczona została granica ostatniego nadajnika, co znaczy, że ilość możliwych do zasłonięcia promieni staje się bardzo mała. W praktyce, ponieważ moduły nie dolegają ściśle do granicy ramki, dokładność w tych miejscach może być jeszcze niższa.
+
+Ponieważ jednak ramka projektowana była pod kątem posiadanego monitora 24'', obszar ten jest z założenia nieużywany, gdyż zajmuje go obudowa wyświetlacza.\\
+
+Jednym z pierwszych napotkanych problemów podczas oprogramowywania systemu był przypadek takiego umieszczenia obiektu, kiedy byłby on zasłonięty przez inny obiekt w scenie. Promienie zatrzymujące się  na pierwszym z nich, nie byłyby w stanie oświetlić drugiego z nich, w efekcie czego drugi pozostając w ,,cieniu'' pierwszego, nie był by wykryty. Sytuacja taka w przypadku jedynie dwóch obiektów ma nikłe szanse zaistnienia \pauza dla dostatecznie dużych odległości pomiędzy obiektami zawsze będą istnieć promienie niezasłonięte przez pierwszy obiekt.
+
+Problem zaczyna nabierać większego znaczenia, gdy do trzech istniejących już obiektów, dodany zostanie czwarty i rozmieszczone będą na planie prostokąta.
+
+Jak pokazują rysunki \ref{fig:scene_heatmap_5_rect_case} i \ref{fig:scene_heatmap2_5_rect_case}, pierwsza wersja algorytmu heatmapy słabo radzi sobie z tak postawionym zadaniem, jednak usprawniona wersja jest w stanie poprawnie wykryć wszystkie cztery przeszkody.
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_heatmap_5_rect_case}
+  }
+ }
+ \caption{Przypadek czterech przeszkód, pierwotny algorytm, $a = 5$.}
+ \label{fig:scene_heatmap_5_rect_case}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_heatmap2_5_rect_case}
+  }
+ }
+ \caption{Przypadek czterech przeszkód, ulepszony algorytm, $a = 5$.}
+ \label{fig:scene_heatmap2_5_rect_case}
+\end{figure}
