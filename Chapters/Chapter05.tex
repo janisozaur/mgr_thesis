@@ -12,11 +12,28 @@ Na potrzeby pracy przyjmijmy, że światło z nadajnika rozchodzi się w postaci
 
 Przerwanie któregokolwiek z takich promieni poprzez zasłonięcie odbiornika powoduje zmianę stanu na jego wyjściu. Fotodiody oświetlone dają na wyjściu stan niski, zaś nieoświetlone \ppauza wysoki.
 
-Rysunek~\ref{fig:scene_rays_sample} prezentuje schemat ramki z włączonym jednym modułem.
+Rysunek~\ref{fig:scene_rays_sample} prezentuje schemat ramki z włączonym jednym modułem. Zachowane są proporcje względem ilości modułów na ściankach oraz rozmieszczenia fotodiod w modułach względem nadajników, chociaż fizyczne wymiary urządzenia i wynikające z tego ograniczenia zostały pominięte:
+\begin{itemize}
+ \item odstęp pomiędzy ścianką ramki, a najbliższym modułem,
+ \item wielkość fotodiod i nadajników,
+ \item rozmieszczanie elementów w osi $Z$,
+ \item elementy konstrukcyjne ramki (aluminiowe kątowniki, śrubki, przewody, itp.),
+ \item diody LED działające w paśmie światła widzialnego.
+\end{itemize}
+
+Pominięte aspekty mają znaczenie jedynie w czytelności prezentacji i nie wpływają na poprawność przedstawianego modelu.
+
+Odstęp pomiędzy fotodiodami wynosi 10, natomiast między nadajnikami 80, co przekłada się na charakterystykę modułów: 8 odbiorników w równych odstępach, 1 nadajnik po środku. Rozmiar nadajników i odbiorników jest taki sam i wynosi 5. Dodatkowo, nadajniki przesunięte są o 5 względem rastra wyznaczonego przez odbiorniki.\\
 
 \begin{figure}
  %\includegraphics[width=\textwidth]{gfx/scene_rays_sample.svg}
- \includesvg{gfx/scene_rays_sample}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_rays_sample}
+  }
+ }
  \caption{Wizualizacja ramki. Czarne okręgi \ppauza fotodiody; czerwone \ppauza diody LED; czarne odcinki \ppauza odbierane promienie.}
  \label{fig:scene_rays_sample}
 \end{figure}
@@ -25,7 +42,7 @@ Dane o promieniach zbierane są przez mikrokontroler, opakowywane w ramki protok
 
 Wykorzystując te informacje można stworzyć \textit{heatmapę} prezentującą w graficzny sposób rozkład gęstości przecięć promieni zasłoniętych. Daje to możliwość wizualnego rozpoznania konturów obiektów znajdujących się wewnątrz ramki.
 
-Wygodnym sposobem wyboru kolorów heatmapy jest wykorzystanie modelu barw HSL, przy czym wielkościom $s$ i $l$ zostały przypisane stałe wartości: $s = 1$, $l = 0.5$, natomiast parametr $h$ został dobrany w taki sposób, aby zmieniał się od $240^{\circ}$ (niebieski) do $0^{\circ}$ (czerwony) i reprezentował tym odpowiednio na ,,mało'' i ,,dużo'', przy czym dokładne wartości ze skali .
+Wygodnym sposobem wyboru kolorów heatmapy jest wykorzystanie modelu barw HSL, przy czym wielkościom $s$ i $l$ zostały przypisane stałe wartości: $s = 1$, $l = 0.5$, natomiast parametr $h$ został dobrany w taki sposób, aby zmieniał się od $240^{\circ}$ (niebieski) do $0^{\circ}$ (czerwony) i reprezentował tym odpowiednio ,,mało'' i ,,dużo'', przy czym dokładne wartości ze skali nie mają istotnego znaczenia, a jedynie ich względna wielkość.
 
 Heatmapa generowana jest w następujący sposób:
 \begin{enumerate}
@@ -33,7 +50,7 @@ Heatmapa generowana jest w następujący sposób:
  \item pobierane kolejno są dane o zasłoniętych promieniach dla każdego z modułów,
  \item dla każdego zasłoniętego promienia wyznaczany jest \textit{bounding box}, z dokładnością do $a$,
  \item dla każdego kwadrata z bounding boksa promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
- \item jeśli promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o 1,
+ \item jeśli promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o $1$,
  \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowana jest największa wartość licznika $C$, $C_{max}$, względem której skalowane są kolory heatmapy,
  \item dla każdego kwadrata $A_{i,j}$, jeśli $C_{i,j} > 0$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.
 \end{enumerate}
@@ -61,4 +78,31 @@ Wybrane kroki powyższego algorytmu prezentują rysunki \ref{fig:scene_intersect
   \caption[Algorytm konstrukcji heatmapy]{Algorytm konstrukcji heatmapy, $a$ = 10.}\label{fig:scene_heatmap_algorithm}
 \end{sidewaysfigure}
 
-\clearpage
+Na potrzeby testów i prezentacji stworzyłem dodatkową funkcjonalność pozwalającą na rozmieszczanie w scenie wirtualnych przeszkód, pozwala to przedstawić działanie algorytmów w pewnej teoretycznej, idealnej sytuacji, która nie zawsze występuje przy rozwojowym sprzęcie.
+
+Większość przedstawianych w tym rozdziale sytuacji będzie opierać się o fikcyjne przeszkody pod postacią okręgów.\\
+
+Ze względu na możliwość badania jedynie obecności lub braku promienia, system jest w stanie raportować w najlepszym przypadku otoczkę wypukłą obiektów. Otoczka wypukła zbioru punktów $A$, oznaczana zwykle $\mbox{conv} A$ to najmniejszy wypukły zbiór punktów zawierający $A$.\\
+
+Wykorzystując opisany wcześniej algorytm generowania heatmapy można już zaimplementować system wykrywania przeszkód. Istotnym dla działania programu jest wybór wielkości $a$. Mniejsze wartości zwiększają rozdzielczość kosztem większej ilości danych do przetworzenia, zaś większe mogą zapewnić mniejszą podatność na szumy (fałszywe pozytywy i negatywy). Wpływ wielkości $a$ na algorytm konstruujący heatmapę prezentuje rysunek~\ref{fig:scene_heatmap_size}.
+
+\begin{sidewaysfigure}[tbh]
+  \myfloatalign
+  \subfloat[$a$ = 5]
+  {\label{fig:scene_heatmap_5}
+  \def\svgwidth{0.46\linewidth}
+  \includesvg{gfx/scene_heatmap_5}} \quad
+  \subfloat[$a$ = 10]
+  {\label{fig:scene_heatmap_10}%
+  \def\svgwidth{0.46\linewidth}
+  \includesvg{gfx/scene_heatmap_10}} \\
+  \subfloat[$a$ = 15]
+  {\label{fig:scene_heatmap_15}
+  \def\svgwidth{0.46\linewidth}
+  \includesvg{gfx/scene_heatmap_15}} \quad
+  \subfloat[$a$ = 20]
+  {\label{fig:scene_heatmap_20}
+  \def\svgwidth{0.46\linewidth}
+  \includesvg{gfx/scene_heatmap_20}}
+  \caption[Wpływ wielkości $a$ na algorytm konstrukcji heatmapy.]{Wpływ wielkości $a$ na algorytm konstrukcji heatmapy.}\label{fig:scene_heatmap_size}
+\end{sidewaysfigure}
