@@ -79,6 +79,7 @@
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
 \newcommand{\Eg}{E.\,g.}
+\newlength\largefigure % to create a new length
 % ****************************************************************************************************
 
 
@@ -152,6 +153,8 @@
 \input{#1.pdf_tex}%
 }
 \usepackage[figuresleft]{rotating}
+\usepackage{calc}
+\setlength{\largefigure}{\columnwidth+\marginparsep+\marginparwidth}
 % ****************************************************************************************************
 
 
