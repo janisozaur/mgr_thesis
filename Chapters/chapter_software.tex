@@ -30,14 +30,21 @@ Uwzględniając powyższe wytyczne, opracowałem protokół o następujących ce
  \item Wszystkie przesyłane dane są pod postacią znaków kodu ASCII, zarówno z hosta do mikrokontrolera jak i z powrotem. Używane są trzy sposoby tłumaczenia danych z postaci binarnej na kod ASCII:
  \begin{enumerate}
   \item Numeryczny zapis dziesiętny \pauza wartości zapisywane są w~systemie dziesiętnym po jednej stronie, druga strona konwertuje liczbę ponownie na system binarny.
-  \item Base64 \pauza System konwersji danych konwertujący ciąg 8-bitowych danych na ciąg 6-bitowych danych z określonym alfabetem.\graffito{\color{red}opisać w załączniku base64}
+  \item Base64\label{item:base64} \pauza System konwersji danych konwertujący ciąg 8-bitowych danych na ciąg 6-bitowych danych z określonym alfabetem. Algorytm ten opisany jest w sekcji~\ref{sec:base64}.
   \item Zapis binarny z offsetem \pauza dla ograniczonych wielkości zmiennych zastosowałem przesunięcie wartości, które zapewnia ich prezentację w kodzie ASCII: do wartości zmiennej dodawany jest offset 'a', tak więc 'a' rozumiane jest jako 0, 'b' jako 1, itd.
  \end{enumerate}
  \item Do synchronizacji wykorzystany został znak o kodzie \textsc{0x0D}, czyli powrót karetki (\textit{carriage return}), dzięki czemu synchronizacja jest czytelnia zarówno dla komputera jak i człowieka.
- \item Protokół został zaprojektowany w modulu klient-serwer, gdzie klient (komputer) odpytuje o dane serwer (mikrokontroler).\\
+ \item Protokół został zaprojektowany w modelu klient-serwer, gdzie klient (komputer) odpytuje o dane serwer (mikrokontroler).\\
 \end{itemize}
 
-Dzięki identyfikowania urządzenia jako port szeregowy, możliwe jest podłączenie się dowolnym klientem terminala (np. \textsc{screen}, \textsc{minicom}, itp.) i ręczna obsługa urządzenia.
+O wyborze algorytmu Base64 (\ref{item:base64}) zadecydowała jego powszechność, co przekłada się na dostępność narzędzi kodujących i dekodujących.
+Biblioteki \texttt{Qt} także dostarczają implementacji funkcji obsługujących to kodowanie.
+
+Prostota tego algorytmu przekłada się na możliwość stworzenia zoptymalizowanej implementacji, która na mikrokontrolerze może znacząco się przekładać na szybkość transmisji danych.
+
+Dodatkowo, dla pewnych struktur danych, nawet w postaci zakodowanej można szybko ocenić czy są one poprawne.\\
+
+Dzięki identyfikowaniu się urządzenia jako port szeregowy, możliwe jest podłączenie się dowolnym klientem terminala (np. \textsc{screen}, \textsc{minicom}, itp.) i ręczna obsługa urządzenia.
 Znacznie pomaga to podczas rozwijania oprogramowania umożliwiając łatwe wprowadzenie systemu w~skrajne przypadki.\\
 
 Obsługę protokołu od strony mikrokontrolera można przedstawić pseudokodem z algorytmów~\ref{alg:proto_uc_interrupt}~i~\ref{alg:proto_uc_main}.
