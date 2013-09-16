@@ -59,7 +59,7 @@ Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiornik
 Dwie płytki drukowane, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję multipleksera portów - układy te to dekodery 4-do-16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów nić byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio. Zastosowanie takiego rozwiązania jest szybsze niż w przypadku interfejsu szeregowego, np. takiego jak I\textsuperscript{2}C lub SPI, jednak pociąga za sobą konieczność poprowadzenia sygnału \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} do każdego modułu osobno zamiast zintegrowania go w magistrali łączącej wszystkie moduły wygodną do podłączania tasiemką. Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawiania adresów logicznych modułów, chociaż pozwalałaby na dalsze rozszerzanie ramki o kolejne moduły, zwiększałaby koszty oraz wymagany nakład pracy, rozumianej zarówno przez tworzone oprogramowanie jak i ,,koszt'' działania programu, tj. czasu wymaganego do
 obsługi wybranego protokołu, zaważyły o ostatecznym wyborze rozwiązania równoległego.
 
-Wszystkie płytki PCB\graffit{PCB, printed circuit board \ppauza płytka z układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
+Wszystkie płytki PCB\graffito{PCB, printed circuit board \ppauza płytka z układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
 
 Stworzony sprzęt przeszedł kilka zmian: zarówno mikroprocesor jak i elementy konstrukcji były kilkukrotnie wymieniane.\\
 

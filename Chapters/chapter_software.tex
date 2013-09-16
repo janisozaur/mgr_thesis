@@ -29,10 +29,58 @@ Uwzględniając powyższe wytyczne, opracowałem protokół o następujących ce
 \begin{itemize}
  \item Wszystkie przesyłane dane są pod postacią znaków kodu ASCII, zarówno z hosta do mikrokontrolera jak i z powrotem. Używane są trzy sposoby tłumaczenia danych z postaci binarnej na kod ASCII:
  \begin{enumerate}
-  \item Numeryczny zapis dziesiętny \pauza liczby zapisywane są w systemie dziesiętnym po jednej stronie, druga strona konwertuje liczbę ponownie na system binarny.
+  \item Numeryczny zapis dziesiętny \pauza wartości zapisywane są w~systemie dziesiętnym po jednej stronie, druga strona konwertuje liczbę ponownie na system binarny.
   \item Base64 \pauza System konwersji danych konwertujący ciąg 8-bitowych danych na ciąg 6-bitowych danych z określonym alfabetem.\graffito{\color{red}opisać w załączniku base64}
   \item Zapis binarny z offsetem \pauza dla ograniczonych wielkości zmiennych zastosowałem przesunięcie wartości, które zapewnia ich prezentację w kodzie ASCII: do wartości zmiennej dodawany jest offset 'a', tak więc 'a' rozumiane jest jako 0, 'b' jako 1, itd.
  \end{enumerate}
  \item Do synchronizacji wykorzystany został znak o kodzie \textsc{0x0D}, czyli powrót karetki (\textit{carriage return}), dzięki czemu synchronizacja jest czytelnia zarówno dla komputera jak i człowieka.
  \item Protokół został zaprojektowany w modulu klient-serwer, gdzie klient (komputer) odpytuje o dane serwer (mikrokontroler).\\
 \end{itemize}
+
+Dzięki identyfikowania urządzenia jako port szeregowy, możliwe jest podłączenie się dowolnym klientem terminala (np. \textsc{screen}, \textsc{minicom}, itp.) i ręczna obsługa urządzenia.
+Znacznie pomaga to podczas rozwijania oprogramowania umożliwiając łatwe wprowadzenie systemu w~skrajne przypadki.\\
+
+Obsługę protokołu od strony mikrokontrolera można przedstawić pseudokodem z algorytmów~\ref{alg:proto_uc_interrupt}~i~\ref{alg:proto_uc_main}.
+\begin{algorithm}
+\caption{Obsługa protokołu komunikacji, strona mikrokontrolera, przerwanie portu szeregowego}
+\label{alg:proto_uc_interrupt}
+\begin{algorithmic}[1]
+  \REQUIRE \texttt{dane} \ppauza tablica statyczna, do której końca dopisywane są przychodzące dane. Wystarczająco duża na pomieszczenie spodziewanej ilości danych.\\
+  \texttt{Serial} \ppauza obiekt klasy obsługującej port szeregowy\\
+  \texttt{input, length, commandReady} \ppauza zmienne wykorzystywane do synchronizacji pomiędzy obsługą przerwania, a główną pętlą programu
+  \STATE count \textleftarrow{} $0$
+  \WHILE{Serial.available()}
+    \IF{commandReady == true}
+      \STATE continue;
+    \ENDIF
+    \STATE char \textleftarrow{} Serial.read()
+    \STATE dane[count++] \textleftarrow{} char
+    \IF{char == '\textbackslash{}r'}
+      \STATE length \textleftarrow{} count
+      \STATE input \textleftarrow{} dane
+      \STATE count \textleftarrow{} $0$
+      \STATE commandReady \textleftarrow{} true
+    \ENDIF
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Obsługa protokołu komunikacji, strona mikrokontrolera, główna pętla}
+\label{alg:proto_uc_main}
+\begin{algorithmic}[1]
+  \REQUIRE \texttt{Serial} \ppauza obiekt klasy obsługującej port szeregowy\\
+  \texttt{input, length, commandReady} \ppauza zmienne wykorzystywane do synchronizacji pomiędzy obsługą przerwania, a główną pętlą programu\\
+  \texttt{toBase64(input, output, inputLength)} \ppauza funkcja zamieniająca ciąg danych \texttt{input} o długości \texttt{inputLength} na kodowanie Base64 i zapisująca wynik do \texttt{output}, zwracająca długość ciągu \texttt{output}\\
+  \texttt{handleCommand(input, output)} \ppauza funkcja obsługi komend protokołu, zapisuje ewentualne dane zwrotne w buforze \texttt{output}, zwraca długość zapisanych danych
+  \WHILE{true}
+    \IF{commandReady == true}
+      \STATE resultLength \textleftarrow{} handleCommand(input, commandBuffer)
+      \STATE b64Length \textleftarrow{} toBase64(commandBuffer, outputBuffer, resultLength)
+      \STATE Serial.write(outputBuffer, b64Length)
+      \STATE Serial.write('\textbackslash{}r')
+      \STATE commandReady \textleftarrow{} false
+    \ENDIF
+  \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
