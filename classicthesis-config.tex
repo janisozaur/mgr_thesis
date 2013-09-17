@@ -157,6 +157,12 @@
 \usepackage{pdfpages}
 \usepackage{gitinfo}
 \newcommand{\myVersion}{\gitAbbrevHash: \gitAuthorIsoDate\xspace}
+
+\newfloat{listing}{h}{lol2}
+\newcommand\listingscaption{Listing}
+\floatname{listing}{\listingscaption}
+\newcommand\listoflistingscaption{Spis listingów}
+\providecommand\listoflistings{\listof{listing}{\listoflistingscaption}}
 % ****************************************************************************************************
 
 

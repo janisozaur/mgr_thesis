@@ -91,3 +91,102 @@ Obsługę protokołu od strony mikrokontrolera można przedstawić pseudokodem z
   \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
+
+\section{Oprogramowanie na komputer}
+W celu stworzenia oprogramowania dla komputera wykorzystałem kilka środowisk i bibliotek.
+
+\paragraph{Qt}
+Wieloplatformowe środowisko (ang. \textsl{framework}) \textsmaller{Qt}, licencjonowane wolną licencją \textsc{GNU LGPL 2.1} oraz \textsc{GNU GPL 3.0}, składa się z kilku komponentów.
+W jego skład wchodzą między innymi: biblioteka \textsc{Qt} oraz kompilator \verb|moc|.
+Wszystkie te elementy znacznie usprawniają pisanie aplikacji w języku \verb|C++| dostarczając metod, które abstrahują od specyfiki wykorzystywanego systemu operacyjnego.
+
+Pisanie nawet skomplikowanych programów z wykorzystaniem \textsc{Qt} jest proste, łatwe, szybkie i przyjemne.
+Programista świadomy różnic pomiędzy systemami operacyjnymi i delegujący obsługę parametrów do metod dostarczanych przez klasy bibliotek \textsc{Qt} zyskuje możliwość skompilowania swojego kodu pod platformy \textsc{Linux}, \textsc{Windows} oraz \textsc{Mac OS X} bez konieczności jakichkolwiek zmian.
+
+Szerokie spektrum dostarczanych klas (począwszy od kontenerów danych i metod iteracji, przez obsługę urządzeń wejściowych, przez obsługę sieci, aż po rysowanie i zarządzanie grafikami i wiele, wiele innych\ldots) zapewnia, że do zaimplementowania wielu aplikacji nie będzie wymagane wykorzystanie bibliotek trzecich.
+\newline
+\newline
+\textsl{Sygnały i sloty}
+Ze względu na intensywne wykorzystywanie w stworzonych aplikacjach połączeń sygnał-slot, zamieszczam poniżej ich opis.
+
+Centralną właściwością środowiska \textsc{Qt}, a jednocześnie jedną z najbardziej odróżniających ten framework od innych, jest mechanizm sygnałów i slotów będący zarządzaną metodą komunikacji pomiędzy obiektami.
+
+Chociaż na pierwszy rzut oka przypomina ona znane dotychczas metody oparte o wywołania zwrotne (ang. \textsl{callback}) i faktycznie się z~nich wywodzi, to jednak różni się od nich w kilku kluczowych aspektach.
+
+Jest to metoda dynamiczna (działająca w czasie wykonywania \ppauza ang. \textsl{runtime}).
+Metoda wywołań zwrotnych wykorzystywana jest głównie do zamodelowania statycznych (tj. znanych już podczas czasu kompilacji \ppauza ang. \textsl{compiletime}) powiązań pomiędzy obiektami jak np:
+\begin{verse}
+użytkownik kliknął przycisk \texttimes~\textrightarrow~wywołaj metodę \texttt{close()}
+\end{verse}
+
+W przypadku tym przypisuje się wskaźnik do funkcji do pewnego pola klasy wywołującej, który w momencie zajścia zdarzenia jest wywoływany.
+Konsekwencją takiego podejścia jest konieczność znania odbiorników w czasie kompilacji, co uniemożliwia np. ładowanie wtyczek w czasie rzeczywistym i powiadamiania ich o zdarzeniach w następujący sposób:
+\begin{verse}
+powiadom wszystkie odbiorniki o zajściu zdarzenia $\omega$
+\end{verse}
+
+Zastosowanie w tym miejscu wektorów wskaźników jest jedynie obejściem problemu, a nie jego rozwiązaniem, gdyż nakłada na programistę obowiązek pamiętania o poprawnym przydzielaniu i zwalnianiu pamięci na te elementy, w przypadku aplikacji wielowątkowych szczegółowego analizowania zależności czasowych pomiędzy wywołaniami kodu obiektów, oraz drobiazgowego sprawdzania typów wywołań.
+
+Podejście to wprowadza ponadto nadmiarową i zbędną wiedzę o~odbiornikach do nadajnika.
+
+Rozwiązanie dostarczane przez framework \textsc{Qt} jest elegancką metodą pozbycia się wymienionych wad na rzecz udostępnienia programiście prostego w obsłudze, lecz potężnego i skutecznego, mechanizmu dynamicznego wiązania obiektów w pary nadajnik-odbiornik.
+
+Przekazywane sygnały są ,,wątkowo-bezpieczne'' (ang. \textsl{thread-safe}), co pozwala na przetwarzanie sygnału w innym wątku niż ten, który zainicjował jego wysłanie.
+Aby zrealizować takie podejście, każdy z~obiektów dziedziczących po klasie \verb|QObject| powinien należeć do jakiegoś wątku, tak aby był on uwzględniany w pętli zdarzeń (ang. \textsl{event loop}), jaka jest przez ten wątek przetwarzana.
+Domyślnie każdy nowy obiekt przynależy do wątku rodzica, który go utworzył.
+
+Pociąga to za sobą konsekwencję, że jeżeli obiekt nie przynależy do żadnego wątku, to jego zdarzenia nie będą przetwarzane.
+
+W celu uproszczenia obsługi, środowisko \textsc{Qt} domyślnie wykorzystuje do wszystkich obiektów wątek główny aplikacji i jeśli programista jawnie nie usunie z niego obiektów, to ich sygnały będą przetwarzane właśnie w tym wątku.
+
+Aby zintegrować to rozwiązanie z kodem, postanowiono ,,rozszerzyć'' standard\graffito{,,Rozszerzenie'' to wykorzystywane jest tylko i wyłącznie do środowiskia \textsc{Qt}.} języka \verb|C++|.
+Do istniejących już kwalifikatorów \verb|public|, \verb|private| i~\verb|protected| dodano dwa nowe: \verb|signals| i \verb|slots|.
+
+Kwalifikator \verb|signals| definiuje sygnały. Mają one taką samą strukturę, jak zwykłe metody klasy z następującymi wyjątkami:
+\begin{aenumerate}
+  \item definicja sygnału jest tylko i wyłącznie jego deklaracją, oznacza to, że sygnał nie posiada żadnego kodu, jest tylko abstrakcyjnym tworem komunikującem zajście pewnego zdarzenia,
+  \item sygnały nie mogą zwracać wartości \ppauza zwracanym typem musi być \verb|void|, a wszelkie przekazywane dane zawarte są w argumentach,
+  \item sygnały są zawsze publiczne.
+\end{aenumerate}
+
+Deklarację pewnej minimalnej klasy zawierającej sygnały prezentuje listing \ref{lst:signals_declaration}.
+
+\begin{listing}
+  \lstinputlisting{listings/signals_declaration.cpp}
+  \caption{Klasa zawierająca sygnały}
+  \label{lst:signals_declaration}
+\end{listing}
+
+Jak pokazano, aby klasa mogła wykorzystać mechanizm sygnałów (a także slotów), musi ona dziedziczyć z klasy \verb|QObject| i wywoływać makro \verb|Q_OBJECT| w prywatnej części deklaracji.
+
+Kwalifikator \verb|slots|, jak łatwo się domyślić, deklaruje sloty.
+Poza dodatkową możliwością wywołania slotu, są to tradycyjne metody klasy i tak samo obowiązują je pozostałe kwalifikatory: \verb|public|, \verb|private| i~\verb|protected|.
+W odróżnieniu od sygnałów, sloty wymagają dostarczenia implementacji i mogą zwracać wartości.
+
+Deklarację pewnej minimalnej klasy zawierającej sloty prezentuje listing \ref{lst:slots_declaration}.
+
+\begin{listing}
+  \lstinputlisting{listings/slots_declaration.cpp}
+  \caption{Klasa zawierająca sloty}
+  \label{lst:slots_declaration}
+\end{listing}
+
+Połączenie emitera ze słuchaczem następuje poprzez wywołanie metody \verb|connect| klasy \verb|QObject|, której argumentami są obiekty nadający i~odbierający, a także nazwy łączonych metod.
+Sygnatura slotu i sygnału musi być taka sama, z wyjątkiem zwracanego typu.
+
+Użyteczną cechą jest możliwość podłączenia sygnału do sygnału, dzięki czemu zostanie wywołany drugi z sygnałów, a w efekcie podłączone do niego sloty.
+
+Pozostała charakterystyka tego rozwiązania, taka jak przekazywanie meta-typów, rozgraniczenie pomiędzy obiektem nadającym, a odbierającym oraz inne, nie została wykorzystana w stworzonym oprogramowaniu, w związku z czym odsyłam czytelnika do dokumentacji środowiska \textsc{Qt} \citep{Qt}.
+\newline
+\newline
+\textsl{Kompilator moc} Ponieważ powyższe rozwiązanie nie należy do standardu języka \verb|C++|, zaś całe oprogramowanie stworzone przy pomocy środowiska \textsc{Qt} kompilowane jest przy pomocy kompilatora \verb|C++| zgodnego ze standardem ISO/IEC C++\citep{CPPStandard}, takiego jak \texttt{g++}, dostarczany jest wraz z \textsc{Qt} kompilator \texttt{moc}, czyli \textsl{meta-object compiler}.
+
+Zadaniem tego narzędzia jest przeparsowanie dostarczonych plików źródłowych pod kątem odszukania wśród nich deklaracji klas dziedziczących z \verb|QObject|, a zatem wykorzystujących rozszerzone możliwości oferowane przez \textsc{Qt} i wygenerowanie kodu zrozumiałego przez wspomniany wyżej ,,zwykły'' kompilator.
+Kod dostarczony przez programistę, pozbawiony rozszerzeń \textsc{Qt} oraz kod wygenerowany przez narzędzie \texttt{moc} są kompilowane, a następnie łączone ze sobą na etapie linkowania.
+
+\paragraph{QSerialPort}
+Biblioteka \textsc{QSerialPort}, oparta o wolną licencję \textsc{GNU LGPL 2.1}, dostarcza metod komunikacji wykorzystujących port szeregowy.
+Opiera się ona o środowisko \textsc{Qt}, przez co bardzo łatwo jest zintegrować ją z projektami korzystającymi z tych narzędzi.
+Podobnie jak samo \textsc{Qt}, biblioteka ta jest wieloplatformowa, co było jednym z~głównych powodów, dla których wybrałem właśnie ją.
+
+Dostarcza ona metody obsługi portów oparte o interfejs \verb|QIODevice| udostępniany przez \textsc{Qt}, które implementowane są z wykorzystaniem natywnych funkcji systemowych dla każdej z platform, dzięki czemu przekazywanie danych odbywa się szybko i sprawnie \citep{QSP}.
