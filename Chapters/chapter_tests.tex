@@ -46,7 +46,7 @@ Jak pokazują rysunki \ref{fig:scene_heatmap_5_rect_case} i \ref{fig:scene_heatm
 
 \begin{figure}
  \centering
- \makebox[\textwidth][r]{
+ \makebox[\textwidth][l]{
   \resizebox{.9\largefigure}{!}{
     \def\svgwidth{0.9\largefigure}
     \includesvg{gfx/scene_heatmap2_5_rect_case}
@@ -55,3 +55,40 @@ Jak pokazują rysunki \ref{fig:scene_heatmap_5_rect_case} i \ref{fig:scene_heatm
  \caption{Przypadek czterech przeszkód, ulepszony algorytm, $a = 5$.}
  \label{fig:scene_heatmap2_5_rect_case}
 \end{figure}
+
+Testy sprzętu miały wiele faz, wymuszały też ewolucję projektu.\\
+
+Pierwotna wersja zakładała dwie diody nadawcze, zamontowane powyżej płaszczyzny odbiorników. Miało to na celu wyeliminowanie problemu odbić odczytywanych w obiornikach, na które diody te nie świeciły.
+
+W praktyce okazało się to zbędnym zabezpieczeniem, gdyż moduły mogące odczytać takie odbicie znajdowały się po tej samej stronie, co nadajnik, a nie były one uwzględniane w odczytach.
+
+Pozwoliło to na zamontowanie nadajników bliżej płaszczyzny odbiorników, zwiększając jednocześnie szansę poprawnego wykrycia sygnału przez bardziej bezpośrednie ich oświetlanie.\\
+
+
+
+Ze względu na ręczne lutowanie elementów modułów, pomimo zachowania najwyższej precyzji, nie wszystkie powstały jednakowe.
+W przypadku przedniej strony ma to istotne znaczenie, ponieważ za krótka fotodioda schowana będzie w wywierconym na nią otworze, co ogranicza ilość dochodzących niej sygnałów.
+
+Znacznym problemem okazała się histereza fotodiod, objawiająca się poprzez przełączenie jej stanu podczas zasłonięcia, jednak po odsłonięciu niektóre z nich nie powracały do spodziewanego, pierwotnego stanu.
+
+Dodatkowo, fotodiody okazują się być podatne na światło dzienne, co w znacznym stopniu ograniczało możliwości testowania sprzętu za dnia lub w niezaciemnionym pomieszczeniu. Światło sztuczne, chociaż nadal powodujące przekłamania, daje znacznie bardziej przewidywalne rezultaty.
+
+Zastosowane w modułach elementy, w szczególności bufory, powodują wydłużenie czasu propagacji sygnału z fotodiod, czyniąc odczytanie stanu magistrali bezpośrednio po wyborze odczytywanego modułu bezwartościowym.
+W celu zniwelowania tego problemu dodane zostało opóźnienie pomiędzy wyborem modułu, a odczytaniem jego stanu.
+Protokół komunikacji umożliwia modyfikację wartości tego opóźnienia (\ref{sec:commands} \nameref{sec:commands}, komenda \textsl{d}), jednak nie jest ona dostępna w programie \nameref{sec:raydisplay} (\ref{sec:raydisplay}).
+Wielkość ta jest podawana w mikrosekundach, a domyślna wartość wynosi 100, została ona uznana za wystarczającą na podstawie serii testów.\\
+
+
+
+Początkowo kalibracja urządzenia dokonywana była na mikrokontrolerze po uruchomieniu.
+Rodziło to szereg problemów spowodowanych przez niestabilność danych, których nie dało się w prosty sposób ominąć.
+Dodatkowym problemem była synchronizacja tak otrzymanej kalibracji z hostem.\\
+
+
+Zmiana diod na mocniejsze, TSAL6400, zaadresowała w różnym stopniu listę powyższych mankamentów.
+
+Większa moc powoduje większą pewność poprawnego odczytu danych przez odbiorniki, a także szybszą ich reakcję.
+
+Dostępność dokładnej specyfikacji tych diod pozwoliła przeprojektować kalibrację na prostszą,a jednocześnie dającą więcej możliwości wersję ,,statyczną'', tj. dostarczaną w pliku wraz z programem.
+Diody te świacą w promieniu 25$^{\circ}$ (podawane jest wychylenie w jedną stronę od osi diody), co po pomiarach oznacza możliwość oświetlenia modułów naprzeciwko oraz po jednym na lewo i prawo od niego.
+Dostarczana domyślna kalibracja zakłada dokładnie takie parametry, przy czym nadajniki brzegowe odczytują tylko dwa moduły: moduł naprzeciwko oraz sąsiadujący z nim po tej samej stronie ramki.
