@@ -246,7 +246,11 @@ Rysunek \ref{fig:raydisplay} pokazuje program po uruchomieniu.
 
 \begin{figure}
  \centering
- \includegraphics[width=\textwidth]{gfx/RayDisplay}
+ \makebox[\textwidth][r]{
+  \resizebox{.85\largefigure}{!}{
+   \includegraphics[width=\textwidth]{gfx/RayDisplay}
+  }
+ }
  \caption{Uruchomiony program RayDisplay}
  \label{fig:raydisplay}
 \end{figure}
@@ -262,7 +266,19 @@ W dalszej kolei instancja \verb|CommunicationThread| tworzy nowy wątek, w któr
 Teraz użytkownik powinien kliknąć na przycisk \fbox{\texttt{start polling}}, ewentualnie zaznaczając wcześniej opcję \texttt{continuous polling}, która sprawi, że po otrzymaniu jednej porcji danych, natychmiast zostanie wysłanie żądanie o kolejną.
 
 Dane odebrane przez \verb|CommunicationThread| są przekazywane sygnałem do \verb|RayDisplayWindow|, gdzie następuje ich wstępna analiza, po czym przekazywane są do \verb|RayDisplayScene| w postaci unormowanej.
-Krok ten pozwala ograniczyć liczbę potrzebnych metod służących do obsługi danych pobieranych różnymi sposobami.
+Krok ten pozwala ograniczyć liczbę potrzebnych metod służących do obsługi danych pobieranych różnymi sposobami.\\
+
+Istotne jest, że komunikacja z urządzeniem zachodzi w osobnym wątku, nie obciążając tym samym wątku głównego zwanego przez \texttt{Qt} wątkiem GUI, gdyż jest to jedyny wątek, który może malować interfejs użytkownika.
+
+Charakterystyka używanego portu szeregowego wymaga ciągłego odpytywania o nowe dane, w przeciwnym wypadku mogą one zostać utracone.
+
+Pętla taka w głównym wątku wpływałaby negatywnie na obsługę wydarzeń związanych z obsługą interfejsu, co mogłoby skutkować w ostateczności oznaczeniem przez system aplikacji jako nieodpowiadającej na zdarzenia.
+
+Podejście takie wymaga jednak synchronizacji żądań i odpowiedzi, co zostało wykonane z pomocą wzorca producent\pauza{}konsument, gdzie bufor żądań strzeżony jest dwoma semaforami\graffito{Semafor to licznik z dostępem atomowym służący do synchronizacji wątków}: piszącym i czytającym.
+
+Ponieważ \verb|CommunicationThread| nie używa pętli zdarzeń (\textsl{event loop}), nie jest możliwe przesyłanie do niego żądań za pomocą slotów. Może on mimo tego emitować sygnały, zostało to wykorzystane do przesyłu danych do dalszego przetwarzania.
+
+Gwarantuje to obsłużenie nowych danych możliwie szybko zachowując przy tym poprawne przetwarzanie zdarzeń z pętli.\\
 
 Program umożliwia także ustawianie, przesuwanie i usuwanie sztucznych, wirtualnych przeszkód, które umożliwiają testowanie algorytmu bez względu na jakość otrzymywanych danych.
 
