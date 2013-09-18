@@ -6,7 +6,7 @@ W tym rozdziale zaprezentuję metody i wyniki testów.
 
 Testy dotyczą działania algorytmu wykorzystując przeszkody wirtualne, wygenerowane w programie oraz prawdziwe, o których informacja dostarczana jest z urządzenia. Przedstawione są też możliwości i ograniczenia sprzętu.\\
 
-Z uwagi na konstrukcję sprzętu, rozdzielczość sprzętu jest zmienna w zależności od miejsca. Dwuwymiarowy rozkład dokładności przentujący ilość przechodzących przez kwadrat o zadanym boku można uzyskać wykorzystując ulepszone algorytm heatmapy podczas gdy ramka zwraca same zera \pauza może być pusta lub wyłączona z prądu.
+Z uwagi na konstrukcję, rozdzielczość sprzętu jest zmienna w zależności od miejsca. Dwuwymiarowy rozkład dokładności prezentujący ilość promieni przechodzących przez kwadraty o zadanych bokach można uzyskać wykorzystując ulepszony algorytm heatmapy, w czasie gdy ramka raportuje, że jest pusta.
 
 Wspomniany rozkład dla $a = 5$ prezentuje rysunek~\ref{fig:scene_heatmap2_resolution_5}. Skala licznika $C$ jest następująca: $C_{min} = -15$, zaznaczone kolorem ciemnoniebieskim, $C_{max} = -1$, zaznaczone kolorem czerwonym. Przez pojedynczych białe kwadraty nie przechodzi żaden promień.
 
@@ -91,4 +91,58 @@ Większa moc powoduje większą pewność poprawnego odczytu danych przez odbior
 
 Dostępność dokładnej specyfikacji tych diod pozwoliła przeprojektować kalibrację na prostszą,a jednocześnie dającą więcej możliwości wersję ,,statyczną'', tj. dostarczaną w pliku wraz z programem.
 Diody te świacą w promieniu 25$^{\circ}$ (podawane jest wychylenie w jedną stronę od osi diody), co po pomiarach oznacza możliwość oświetlenia modułów naprzeciwko oraz po jednym na lewo i prawo od niego.
-Dostarczana domyślna kalibracja zakłada dokładnie takie parametry, przy czym nadajniki brzegowe odczytują tylko dwa moduły: moduł naprzeciwko oraz sąsiadujący z nim po tej samej stronie ramki.
+Dostarczana domyślna kalibracja zakłada dokładnie takie parametry, przy czym nadajniki brzegowe odczytują tylko dwa moduły: moduł naprzeciwko oraz sąsiadujący z nim po tej samej stronie ramki.\\
+
+Fotodiody nadal podatne są na światło dzienne oraz (w mniejszym stopniu) sztuczne, a także nadal zwracają zaszumione dane.
+
+Przykładowy zapis pustej sceny w różnych warunkach oświetlenia widać na rysunku \ref{fig:scene_empty_1} i \ref{fig:scene_empty_2}.\\
+
+Rysunki \ref{fig:scene_with_one_obstacle_1} i \ref{fig:scene_with_one_obstacle_2} pokazują scenę z jednym obiektem (jego pozycja została ręcznie oznaczona) w różnych warunkach oświetlenia.\\
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][l]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_empty_1}
+  }
+ }
+ \caption{Pusta scena 1}
+ \label{fig:scene_empty_1}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][l]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_empty_2}
+  }
+ }
+ \caption{Pusta scena 2}
+ \label{fig:scene_empty_2}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_with_one_obstacle_1}
+  }
+ }
+ \caption{Scena z jednym obiektem (zaznaczonym ręcznie) 1}
+ \label{fig:scene_with_one_obstacle_1}
+\end{figure}
+
+\begin{figure}
+ \centering
+ \makebox[\textwidth][r]{
+  \resizebox{.9\largefigure}{!}{
+    \def\svgwidth{0.9\largefigure}
+    \includesvg{gfx/scene_with_one_obstacle_2}
+  }
+ }
+ \caption{Scena z jednym obiektem (zaznaczonym ręcznie) 2}
+ \label{fig:scene_with_one_obstacle_2}
+\end{figure}
