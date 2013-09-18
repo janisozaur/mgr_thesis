@@ -1,0 +1,20 @@
+%*****************************************
+\chapter{Wyniki}\label{ch:results}
+%*****************************************
+
+Przedstawione w poprzednim rozdziale rezultaty testów pokazują zachowanie algorytmu i sprzętu w różnych przypadkach.
+
+W szczególności rysunki \ref{fig:scene_empty_1}, \ref{fig:scene_empty_2}, \ref{fig:scene_with_one_obstacle_1} i \ref{fig:scene_with_one_obstacle_2} prezentują możliwą do uzyskania dokładność.
+
+Pierwsza para obrazuje poziom szumów w zwracanych danych.
+Jest on miejscami dostatecznie duży, aby mógł zostać pomylony z prawdziwym obiektem znajdującym się w ramce.\\
+
+Druga para obrazków pokazuje wielkość obiektu, jaki potrzebny był do testów.
+
+Obiekty mniejsze, a w szczególności palce były dla systemu ledwo widoczne lub zupełnie niewidoczne.
+
+Nawet w przypadku tak dużych obiektów, zwracane dane nie były zadowalającej jakości, posiadały wiele przekłamań, które ograniczały możliwość prawidłowego wykrycia konturu przeszkody.\\
+
+Zaimplementowany algorytm mógłby dawać dobre rezultaty, gdyby nie znaczny poziom szumu danych wejściowych.
+
+Jest on jednocześnie prosty w implementacji, oparty o proste działania, musi jednak przetwarzać duże ilości danych (w zależności od ustawionych opcji).
