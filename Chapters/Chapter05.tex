@@ -16,7 +16,7 @@ Przerwanie któregokolwiek z takich promieni poprzez zasłonięcie odbiornika po
 
 \section{Model}
 
-Rysunek~\ref{fig:scene_rays_sample} prezentuje schemat ramki z włączonym jednym modułem. Zachowane są proporcje względem ilości modułów na ściankach oraz rozmieszczenia fotodiod w modułach względem nadajników, chociaż fizyczne wymiary urządzenia i wynikające z tego ograniczenia zostały pominięte:
+Rysunek~\ref{fig:scene_rays_sample} prezentuje schemat ramki z włączonym jednym nadajnikiem i przypisanymi mu odbiornikami. Zachowane są proporcje względem ilości modułów na ściankach oraz rozmieszczenia fotodiod w modułach względem nadajników, chociaż fizyczne wymiary urządzenia i wynikające z tego ograniczenia zostały pominięte:
 \begin{itemize}
  \item odstęp pomiędzy ścianką ramki, a najbliższym modułem,
  \item wielkość fotodiod i nadajników,
@@ -63,6 +63,7 @@ Wybrane kroki powyższego algorytmu prezentują rysunki \ref{fig:scene_intersect
 
 \begin{sidewaysfigure}[tbh]
   \myfloatalign
+  \vspace{0.085\textheight}
   \subfloat[Wizualizacja sceny wraz z jednym promieniem, bounding boksem i wybranymi przecinanymi kwadratami]
   {\label{fig:scene_intersections}
   \def\svgwidth{0.47\linewidth}
@@ -94,6 +95,7 @@ Wykorzystując opisany wcześniej algorytm generowania heatmapy można już zaim
 
 \begin{sidewaysfigure}[tbh]
   \myfloatalign
+  \vspace{0.085\textheight}
   \subfloat[$a$ = 5]
   {\label{fig:scene_heatmap_5}
   \def\svgwidth{0.46\linewidth}
@@ -137,6 +139,7 @@ Rezultaty ulepszonego algorytmu prezentuje rysunek~\ref{fig:scene_heatmap2_size}
 
 \begin{sidewaysfigure}[tbh]
   \myfloatalign
+  \vspace{0.085\textheight}
   \subfloat[$a$ = 5]
   {\label{fig:scene_heatmap2_5}
   \def\svgwidth{0.46\linewidth}

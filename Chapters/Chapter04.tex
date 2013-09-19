@@ -2,23 +2,21 @@
 \myChapter{Sprzęt}\label{ch:hardware}
 %************************************************
 
-Na potrzeby realizacji pracy wymagane było stworzenie sprzętu - urządzenia wejściowego, które będzie pozwalało na śledzenie ruchów palców użytkownika.
+Na potrzeby realizacji pracy wymagane było stworzenie sprzętu \pauza urządzenia wejściowego, które będzie pozwalało na śledzenie ruchów palców użytkownika.
 
 Podczas projektowania powstało kilka dodatkowych założeń, które sprzęt powinien spełniać:
 \begin{itemize}
- \item łatwość podłączenia - urządzenie powinno być możliwe do ,,zainstalowania'' w kilka chwil, najlepiej bez konieczności korzystania z narzędzi, podłączania zbyt wielu przewodów,
- \item łatwość użytkowania - urządzenie powinno umożliwiać interakcję z komputerem osobom niezapoznanym z pracą, niekoniecznie posiadającym wiedzę techniczną dotyczącą zasady działania,
- \item działanie w możliwie najróżniejszych warunkach - uwzględnienie spodziewanych warunków pracy urządzenia, tak aby nie przeszkadzały one w jego użytkowaniu,
- \item prostota i modułowość - zmniejszenie kosztów produkcji poprzez zastosowanie możliwie prostych, łatwo dostępnych i sprawdzonych części połączonych w łatwo wymienialne moduły, co dodatkowo poprawi możliwość zastępowania części w wypadku ich uszkodzenia,
+ \item łatwość podłączenia \pauza urządzenie powinno być możliwe do ,,zainstalowania'' w kilka chwil, najlepiej bez konieczności korzystania z narzędzi, podłączania zbyt wielu przewodów,
+ \item łatwość użytkowania \pauza urządzenie powinno umożliwiać interakcję z komputerem osobom niezapoznanym z pracą, niekoniecznie posiadającym wiedzę techniczną dotyczącą zasady działania,
+ \item działanie w możliwie najróżniejszych warunkach \pauza uwzględnienie spodziewanych warunków pracy urządzenia, tak aby nie przeszkadzały one w jego użytkowaniu,
+ \item prostota i modułowość \pauza zmniejszenie kosztów produkcji poprzez zastosowanie możliwie prostych, dostępnych i sprawdzonych części połączonych w łatwo wymienialne moduły, co dodatkowo poprawi możliwość zastępowania elementów w wypadku ich uszkodzenia.\\
 \end{itemize}
-
-Większość postawionych celów udało się zrealizować.
 
 Urządzenie składa się z aluminiowej ramy, złożonej z czterech kątowników, z wywierconymi otworami na diody, fotodiody i elementy mocowania. Rama została zaprojektowana, aby pasowała do posiadanego monitora o przekątnej 24''.
 
 \section{Moduły}
 
-Do ramy przymocowanych jest 20 modułów - po 4 na krótsze i po 6 na dłuższe boki.
+Do ramy przymocowanych jest 20 modułów \pauza po 4 na krótsze i po 6 na dłuższe boki.
 
 Każdy z jednakowych modułów zawiera:
 \begin{itemize}
@@ -28,25 +26,25 @@ Każdy z jednakowych modułów zawiera:
  \item zestaw złącz, oporników wymaganych do funkcjonowania powyższych elementów.
 \end{itemize}
 
-Moduły połączone zostały 8-kanałowym interfejsem równoległym, dodatkowo z dwiema żyłami niosącymi zasilanie oraz osobnymi przewodami z sygnałami chip select (\textsmaller{\textoverline{CS}}) dla bufora oraz diody świecącej (\textsmaller{CS}).\\
+Moduły połączone zostały ośmiokanałowym interfejsem równoległym, dodatkowo z dwiema żyłami niosącymi zasilanie oraz osobnymi przewodami z sygnałami chip select (\textsmaller{\textoverline{CS}}) dla bufora oraz diody świecącej (\textsmaller{CS}).\\
 
 Odstęp pomiędzy fotodiodami wynosi 10mm, natomiast między nadajnikami 80mm, co przekłada się na charakterystykę modułów: 8 odbiorników w równych odstępach, 1 nadajnik po środku.
 Średnica odbiorników wynosi 3mm, zaś nadajników:
 \begin{itemize}
  \item w pierwotnym planie też 3mm, rozmieszczone jeden nad drugim w celu zwiększenia ich widoczności,
- \item w finalnej wersji jeden nadajnik o średnicy 5mm.
+ \item w finalnej wersji jeden nadajnik o średnicy 5mm.\\
 \end{itemize}
 
-Dodatkowo, nadajniki przesunięte są o 5mm względem rastra wyznaczonego przez odbiorniki \pauza aby znajdowały się idealnie pomiędzy fotodiodami.
+Dodatkowo, nadajniki przesunięte są o 5mm względem rastra wyznaczonego przez odbiorniki, tak aby znajdowały się idealnie pomiędzy fotodiodami.
 
-Moduły zostały zaprojektowane w taki sposób, aby rozmieszczenie fotodiod i nadajników było jednolite, bez względu na granice między modułami. Każdy moduł posiada 4 dodatkowe otwory służace mocowaniu ich do ramki.\\
+Moduły zostały zaprojektowane w taki sposób, aby rozmieszczenie fotodiod i nadajników było jednolite, bez względu na granice między modułami. Każdy moduł posiada 4 dodatkowe otwory służace przymocowaniu ich do ramki za pomocą śrub.\\
 
 Otwory na moduły wiercone były w miękkim aluminium wykorzystując wzorzec ze stali, którego wykonanie zostało zlecone zewnętrznej firmie.
-Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiorniki, elementy mocowania), ale także dwa elementy mocujące poprzedniego modułu, co pozwala na wygodną synchronizację otworów podczas wiercenia. Wzorzec przedstawiony jest na rysunku \ref{fig:holes_master}. Po prawej stronie widać dwa otwory synchronizacyjne (górny \ppauza montażowy, dolny \ppauza fotodioda), u góry po środku otwory nadajników.\\
+Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiorniki, elementy mocowania), ale także dwa elementy mocujące poprzedniego modułu, co pozwalało na wygodną synchronizację otworów podczas wiercenia. Wzorzec przedstawiony jest na rysunku \ref{fig:holes_master}. Po prawej stronie widać dwa otwory synchronizacyjne (górny \ppauza montażowy, dolny \ppauza fotodioda), u góry po środku otwory nadajników.\\
 
 \begin{figure}
  \centering
- \makebox[\textwidth][r]{
+ \makebox[\textwidth][l]{
   \resizebox{.9\largefigure}{!}{
     \def\svgwidth{0.9\largefigure}
     \includesvg{gfx/holes_master}
@@ -56,8 +54,9 @@ Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiornik
  \label{fig:holes_master}
 \end{figure}
 
-Dwie płytki drukowane, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję multipleksera portów - układy te to dekodery 4-do-16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów nić byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio. Zastosowanie takiego rozwiązania jest szybsze niż w przypadku interfejsu szeregowego, np. takiego jak I\textsuperscript{2}C lub SPI, jednak pociąga za sobą konieczność poprowadzenia sygnału \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} do każdego modułu osobno zamiast zintegrowania go w magistrali łączącej wszystkie moduły wygodną do podłączania tasiemką. Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawiania adresów logicznych modułów, chociaż pozwalałaby na dalsze rozszerzanie ramki o kolejne moduły, zwiększałaby koszty oraz wymagany nakład pracy, rozumianej zarówno przez tworzone oprogramowanie jak i ,,koszt'' działania programu, tj. czasu wymaganego do
-obsługi wybranego protokołu, zaważyły o ostatecznym wyborze rozwiązania równoległego.
+Dwie płytki drukowane, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję demultipleksera portów \pauza układy te to dekodery 4\ppauza{}do\ppauza{}16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów niż byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio.
+Zastosowanie takiego rozwiązania jest szybsze niż w przypadku interfejsu szeregowego, np. takiego jak I\textsuperscript{2}C lub SPI, jednak pociąga za sobą konieczność poprowadzenia sygnału \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} do każdego modułu osobno zamiast zintegrowania go w magistrali łączącej wszystkie moduły wygodną do podłączania tasiemką.
+Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawiania adresów logicznych modułów, chociaż pozwalałaby na dalsze rozszerzanie ramki o kolejne moduły, zwiększałaby koszty oraz wymagany nakład pracy, rozumianej zarówno przez tworzone oprogramowanie jak i ,,koszt'' działania programu, tj. czasu wymaganego do obsługi wybranego protokołu, zaważyły o ostatecznym wyborze rozwiązania równoległego.
 
 Wszystkie płytki PCB\graffito{PCB, printed circuit board \ppauza płytka z układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
 
@@ -87,8 +86,8 @@ Płytkę tę prezentuje rysunek~\ref{fig:msp430_exp}.
  \label{fig:msp430_ez430}
 \end{figure}
 
-Duże problemy okazał się powodować moduł komunikacji szeregowej UART, który operował w standardzie RS232/TTL\graffito{transistor-to-transistor logic, poziomy napięć i prądów przystosowane do niedługich połączeń pomiędzy układami}.
-Po podłączeniu adaptera USB-RS232 opartego o renomowany układ FTDI FT2232C okazało się w testach, że podczas dużego obciążenia hosta, pojedyncze bity ramki RS232 mogą się ,,zgubić'', tj. jedynki sporadycznie zastępowane były zerami.
+Duże problemy okazał się powodować moduł komunikacji szeregowej UART, który operował w standardzie RS232/TTL\graffito{TTL, transistor\ppauza{}to\ppauza{}transistor logic, poziomy napięć i prądów przystosowane do niedługich połączeń pomiędzy układami}.
+Po podłączeniu adaptera USB\ppauza{}RS232 opartego o renomowany układ FTDI FT2232C okazało się w testach, że podczas dużego obciążenia hosta, pojedyncze bity ramki RS232 mogą się ,,zgubić'', tj. jedynki sporadycznie zastępowane były zerami.
 Ze względu na spodziewany charakter wykorzystywania pracy, np. podczas gier, oczekiwane było poprawne działanie także w warunkach wysokiego obciążenia, co dyskwalifikowało takie rozwiązanie.\\
 
 \section{Rewizja druga}
@@ -132,6 +131,8 @@ Na tym rysunku płytka jest rozłączona.\\
 
 Druga, a zarazem finalna wersja tego sprzętu wykorzystuje w tym celu dwie płytki PCB, każda zawierająca po jednym układzie 74HC4514 oraz 74HC4515. Układy te to selektory 1\ppauza{}z\ppauza{}16, które różnią się tylko i wyłącznie wbudowanym inwerterem: 74HC4514 posiada wolną jedynkę, tzn. na wybranym wyjściu ustawiony zostanie stan wysoki, pozostałe linie mają stan niski; układ 74HC4515 posiada wolne zero \pauza na każdej linii znajduje się inwerter.
 
+Ta płytka, podobnie jak jej poprzednia wersja, zawiera zestaw diod LED umożliwiających debugowanie.
+
 Rysunek~\ref{fig:second_interface} przedstawia drugą wersję płytki interfejsowej. Płytka ta na zdjęciu jest podłączona.\\
 
 \begin{figure}
@@ -156,8 +157,11 @@ Rysunek~\ref{fig:second_interface} przedstawia drugą wersję płytki interfejso
  \label{fig:second_interface}
 \end{figure}
 
-Zastosowanie dwóch selektorów 16-liniowych wymaga sześciu linii: 4 linie adresowe oraz po jednej linii \textsmaller{\textoverline{I}} (\textsmaller{\textoverline{Inhibit}}) dla każdego układu. Chociaż 20 użytych modułów można zaadresować za pomocą 5\ppauza{}bitowej przestrzeni adresowej zdolnej do obsługi maksymalnie 32 odbiorników, to należy zwrócić uwagę, że dekodery 5\ppauza{}do\ppauza{}32 nie istnieją. Ich konstrukcja, choć trywialna, dodawałaby zbędnego skomplikowania oraz kosztów, dając w zamian niewiele.
-Dodatkowo, posiadanie dedykowanych linii wybierających pozwala na przełączenie urządzenia w tryb ,,stand-by'', co w tym wypadku oznacza wyłączenie zarówno nadawania jak i odbierania. Podwójne elementy sterujące umożliwiają także ograniczenie długości potrzebnych przewodów, rozmiarów płytki (ze względu na zmniejszoną ilość wyjść) oraz konieczność mniejszej ingerencji w urządzenie w razie awarii.\\
+Zastosowanie dwóch selektorów 16-liniowych wymaga sześciu linii: 4 linie adresowe oraz po jednej linii \textsmaller{\textoverline{I}} (\textsmaller{\textoverline{Inhibit}}) dla każdego układu.
+Chociaż 20 użytych modułów można zaadresować za pomocą 5\ppauza{}bitowej przestrzeni adresowej zdolnej do obsługi maksymalnie 32 odbiorników, to należy zwrócić uwagę, że dekodery 5\ppauza{}do\ppauza{}32 nie istnieją.
+Ich konstrukcja, choć trywialna, dodawałaby zbędnego skomplikowania oraz kosztów, dając w zamian niewiele.
+Dodatkowo, posiadanie dedykowanych linii wybierających pozwala na przełączenie urządzenia w tryb ,,stand-by'', co w tym wypadku oznacza wyłączenie zarówno nadawania jak i odbierania.
+Podwójne elementy sterujące umożliwiają także ograniczenie długości potrzebnych przewodów, rozmiarów płytki (ze względu na zmniejszoną ilość wyjść) oraz konieczność mniejszej ingerencji w urządzenie w razie awarii.\\
 
 Ramkę w całej okazałości, zamontowaną na wzorcowym monitorze pokazuje rysunek~\ref{fig:frame_full}.
 

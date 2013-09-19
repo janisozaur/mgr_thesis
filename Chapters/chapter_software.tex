@@ -38,7 +38,7 @@ Uwzględniając powyższe wytyczne, opracowałem protokół o następujących ce
 \end{itemize}
 
 O wyborze algorytmu Base64 (\ref{item:base64}) zadecydowała jego powszechność, co przekłada się na dostępność narzędzi kodujących i dekodujących.
-Biblioteki \texttt{Qt} także dostarczają implementacji funkcji obsługujących to kodowanie.
+Biblioteki \texttt{Qt} (wykorzystana w pracy, opisana w dziale \ref{sec:soft_desktop}) także dostarczają implementacji funkcji obsługujących to kodowanie.
 
 Prostota tego algorytmu przekłada się na możliwość stworzenia zoptymalizowanej implementacji, która na mikrokontrolerze może znacząco się przekładać na szybkość transmisji danych.
 
@@ -129,7 +129,7 @@ Zwracane są dane zakodowane w postaci \texttt{pxabc}, gdzie \texttt{x} to numer
 \textsl{t}
 Komenda postaci \texttt{t} zmieniająca stan diody niebieskiej. Używana do weryfikacji poprawnego przetwarzania komend.
 
-\section{Oprogramowanie na komputer}
+\section{Oprogramowanie na komputer}\label{sec:soft_desktop}
 W celu stworzenia oprogramowania dla komputera wykorzystałem kilka środowisk i bibliotek.
 
 \paragraph{Qt}
@@ -219,10 +219,10 @@ Pozostała charakterystyka tego rozwiązania, taka jak przekazywanie meta-typów
 \textsl{Kompilator moc} Ponieważ powyższe rozwiązanie nie należy do standardu języka \verb|C++|, zaś całe oprogramowanie stworzone przy pomocy środowiska \textsc{Qt} kompilowane jest przy pomocy kompilatora \verb|C++| zgodnego ze standardem ISO/IEC C++\citep{CPPStandard}, takiego jak \texttt{g++}, dostarczany jest wraz z \textsc{Qt} kompilator \texttt{moc}, czyli \textsl{meta-object compiler}.
 
 Zadaniem tego narzędzia jest przeparsowanie dostarczonych plików źródłowych pod kątem odszukania wśród nich deklaracji klas dziedziczących z \verb|QObject|, a zatem wykorzystujących rozszerzone możliwości oferowane przez \textsc{Qt} i wygenerowanie kodu zrozumiałego przez wspomniany wyżej ,,zwykły'' kompilator.
-Kod dostarczony przez programistę, pozbawiony rozszerzeń \textsc{Qt} oraz kod wygenerowany przez narzędzie \texttt{moc} są kompilowane, a następnie łączone ze sobą na etapie linkowania.
+Kod napisany przez programistę, pozbawiony rozszerzeń \textsc{Qt} oraz kod wygenerowany narzędziem \texttt{moc} są kompilowane, a następnie łączone ze sobą na etapie linkowania.
 
-\paragraph{QSerialPort}
-Biblioteka \textsc{QSerialPort}, oparta o wolną licencję \textsc{GNU LGPL 2.1}, dostarcza metod komunikacji wykorzystujących port szeregowy.
+\paragraph{QextSerialPort}
+Biblioteka \textsc{QextSerialPort}, oparta o wolną licencję \textsc{GNU LGPL 2.1}, dostarcza metod komunikacji wykorzystujących port szeregowy.
 Opiera się ona o środowisko \textsc{Qt}, przez co bardzo łatwo jest zintegrować ją z projektami korzystającymi z tych narzędzi.
 Podobnie jak samo \textsc{Qt}, biblioteka ta jest wieloplatformowa, co było jednym z~głównych powodów, dla których wybrałem właśnie ją.
 
