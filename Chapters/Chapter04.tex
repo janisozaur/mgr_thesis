@@ -125,7 +125,7 @@ Płytka ta podłączana była do komputera bezpośrednio do portu USB, co pozwal
 Pomimo przeprojektowania płytki interfejsu ramka $\leftrightarrow$ mikrokontroler, która ograniczała liczbę wymaganych połączeń z 24 do 20 \pauza możliwie najniższej praktycznie osiągalnej ilości niewymagającej połączeń szeregowych, układ nie miał nawet takiej ilości złącz GPIO\graffito{GPIO, general-purpose input/output, \pauza interfejs wejścia/wyjścia}.
 Ponadto prędkość transmisji była sztucznie ograniczona do wartości 9600BPS, która nie zapewnia wymaganej przepustowości.
 
-Płytkę widać na rysunku~\ref{fig:msp430_ez430}.\\
+Płytkę przedstawiono na rysunku~\ref{fig:msp430_ez430}.\\
 
 \section{Rewizja trzecia}
 
@@ -146,7 +146,7 @@ Dopiero uzyskanie tego układu pozwoliło na dalszy postęp prac. Problemy zwią
 
 W tej wersji, zmieniona została konstrukcja samej ramki i modułów. Pierwotny projekt zakładał, że diody emitujące światło znajdować będą się w innej płaszczyżnie niż elemnty odbiorcze w celu uniknięcia problemu odbić. Moc wykorzystanych wtedy diod okazała się niewystarczająca do poprawnego oświetlenia odbiorników, przesunięte zostały więc one do płaszczyzny odbiorników.
 
-Z powodu nadal niedostatecznej ilości mocy diod, wymienione zostały na modele 5\texttimes\  mocniejsze, używające 120mA: TSAL6400. Dodane także zostały (do niektórych modułów) diody świecące w paśmie światła widzialnego, element nieprzewidziany w pierwotnym projekcie, co pozwoliło na prostsze debugowanie działania urządzenia.\\
+Z powodu nadal niedostatecznej mocy diod, zostały one wymienione na modele 5\texttimes\  mocniejsze, używające 120mA: TSAL6400. Dodane także zostały (do niektórych modułów) diody świecące w paśmie światła widzialnego, element nieprzewidziany w pierwotnym projekcie, co pozwoliło na prostsze debugowanie działania urządzenia.\\
 
 \section{Interfejs ramka $\leftrightarrow$ mikrokontroler}
 

@@ -13,14 +13,14 @@ Oprogramowanie stworzone na potrzeby pracy składa się z dwóch elementów:
 \end{itemize}
 
 Większość zmian mikrokontrolera, opisywana w rozdziale \ref{ch:hardware}, pociągała za sobą przepisanie oprogramowania praktycznie od zera ze względu na rdzenie z kompletnie innych rodzin, inne dostępne moduły oraz inny sposób ich obsługi. Ilość tych zmian, a także dodatkowe utrudnienia pod postacią niedostępności debugowania, skomplikowanej instalacji słabo dostępnych i przestarzałych pakietów kompilatora skłoniły mnie do poszukania rozwiązania typu RTOS lub podobnego.
-W taki sposób znalazłem środowisko \textsc{Energia}, \textit{fork} środowiska \textsc{Arduino}\graffito{Programy w środowisku \textsc{Arduino} noszą nazwę ,,sketch''.}, oparty o toolchain \textsc{msp-gcc} oraz \textsc{arm-gcc}, pozwalający pisać programy w języku C++ ukrywając wiele szczegółowych operacji przed programistą jak np. konfiguracja stosu USB, pozwalając mu skoncentrować się na istocie tworzonego programu.\\
+W taki sposób znalazłem środowisko \textsc{Energia}, \textit{fork} środowiska \textsc{Arduino}\graffito{Programy w środowisku \textsc{Arduino} noszą nazwę ,,sketch''.}, oparty o~\textit{toolchain} \textsc{msp-gcc} oraz \textsc{arm-gcc}, pozwalający pisać programy w języku C++ ukrywając wiele szczegółowych operacji przed programistą jak np. konfiguracja stosu USB, pozwalając mu skoncentrować się na istocie tworzonego programu.\\
 
 \section{Protokół komunikacji}
 
 Komunikacja hosta z mikrokontrolerem odbywa się przez wirtualny port szeregowy (urządzenie \textsc{USB Communications Device Class, CDC}). Narzuca to kilka ograniczeń dotyczących możliwości protokołu, które należy uwzględnić podczas jego projektowania:
 \begin{itemize}
- \item mikrokontroler będzie widoczny jako zwykłe urządzenie znakowe, należy więc zadbać, aby przesyłane dane były w postaci czytelnej także w zwykłym kliencie terminala,
- \item sposób komunikacji musi uwzględniać możliwość synchronizacji, np. za pomocą specjalnego znaku, który nie pojawia się w innym przypadku,
+ \item mikrokontroler będzie widoczny jako zwykłe urządzenie znakowe, należy więc zadbać, aby przesyłane dane były w~postaci czytelnej także w zwykłym kliencie terminala,
+ \item sposób komunikacji musi uwzględniać możliwość synchronizacji, np. za pomocą specjalnego znaku, który nie pojawia się w~innym przypadku,
  \item protokół musi być możliwie zwięzły ze względu na ograniczoną przepustowość łącza,
  \item komunikacja musi przebiegać dwukierunkowo (w trybie przynajmniej half-duplex).\\
 \end{itemize}
@@ -94,7 +94,7 @@ Obsługę protokołu od strony mikrokontrolera można przedstawić pseudokodem z
 
 \subsection{Dostępne komendy}\label{sec:commands}
 
-Wszystkie komendy identyfikowane są pierwszą literą, mogą mieć zmienną liczbę argumentów, kończą się znakiem carriage return, a błędne komendy są odrzucane.
+Wszystkie komendy identyfikowane są pierwszą literą, mogą mieć zmienną liczbę argumentów, kończą się znakiem \textit{carriage return}, natomiast błęd\-ne komendy są odrzucane.
 Dostępne komendy protokołu wraz z ich opisem przedstawione są poniżej.
 \newline
 \newline
@@ -109,7 +109,7 @@ Komenda postaci \texttt{e\#\#} wybierająca do odczytania zadany moduł, gdzie \
 \textsl{r}
 Komenda postaci \texttt{r} dokonująca odczytu z wybranego aktualnie modułu, stosowana zwykle w połączeniu z komendami \textsl{a} i \textsl{e}.
 
-Zwracane są dane postaci \texttt{rxya}, gdzie \texttt{x} to numer wybranego aktualnie nadajnika, \texttt{y} to numer wybranego aktualnie modułu odbierającego, \texttt{a} to bajt zawierający dane zwrócone przez ten modul, wszystko zakodowane zakodowane Base64 (\ref{item:base64}).
+Zwracane są dane postaci \texttt{rxya}, gdzie \texttt{x} to numer wybranego aktualnie nadajnika, \texttt{y} to numer wybranego aktualnie modułu odbierającego, \texttt{a} to bajt zawierający dane zwrócone przez ten modul, wszystko zakodowane Base64 (\ref{item:base64}).
 \newline
 \newline
 \textsl{d}
@@ -157,7 +157,7 @@ użytkownik kliknął przycisk \texttimes~\textrightarrow~wywołaj metodę \text
 \end{verse}
 
 W przypadku tym przypisuje się wskaźnik do funkcji do pewnego pola klasy wywołującej, który w momencie zajścia zdarzenia jest wywoływany.
-Konsekwencją takiego podejścia jest konieczność znania odbiorników w czasie kompilacji, co uniemożliwia np. ładowanie wtyczek w czasie rzeczywistym i powiadamiania ich o zdarzeniach w następujący sposób:
+Konsekwencją takiego podejścia jest konieczność posiadania wiedzy o~odbiornikach w~czasie kompilacji, co uniemożliwia np. ładowanie wtyczek w czasie rzeczywistym i~powiadamiania ich o~zdarzeniach w~następujący sposób:
 \begin{verse}
 powiadom wszystkie odbiorniki o zajściu zdarzenia $\omega$
 \end{verse}

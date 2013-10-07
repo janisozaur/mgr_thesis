@@ -8,11 +8,22 @@ Ramka składa się z dwudziestu modułów, każdy z nich zawiera jedną diodę L
 
 \section{Pobieranie danych}
 
-Podczas działania urządzenia zapalane są kolejno moduły ponumerowane od 0 do 19, układ jest zaprojektowany w taki sposób, aby w dowolnej chwili świecił się najwyżej jeden moduł. W czasie świecenia wybierane są moduły leżące po przeciwnej stronie i odczytywany jest ich stan, który następnie trafi do komputera. Host decyduje o tym które moduły należy zapalić, odpytać oraz w jakiej kolejności to zrobić. Mikrokontroler jest jednostką wykonawczą tych poleceń i dostarcza z powrotem dane w postaci wygodnej do analizy.
+Podczas działania urządzenia zapalane są kolejno moduły ponumerowane od 0 do 19, układ jest zaprojektowany w taki sposób, aby w~dowolnej chwili świecił się najwyżej jeden moduł. W~czasie świecenia wybierane są moduły leżące po przeciwnej stronie i~odczytywany jest ich stan, który następnie trafi do komputera. Host decyduje o~tym które moduły należy zapalić, odpytać oraz w~jakiej kolejności to zrobić. Mikrokontroler jest jednostką wykonawczą tych poleceń i~dostarcza z~powrotem dane w postaci wygodnej do analizy.
 
-Na potrzeby pracy przyjmijmy, że światło z nadajnika rozchodzi się w postaci dyskretnych promieni \pauza wiązek światła łączących go z odbiornikami. Pozwala to na uproszczenie opisu metody działania bez poświęcania dokładności \pauza światło, które nie trafia w aktywną w danej chwili fotodiodę nie jest brane pod uwagę.
+Na potrzeby pracy przyjmijmy, że światło z nadajnika rozchodzi się w postaci dyskretnych promieni \pauza wiązek światła łączących go z~odbiornikami. Pozwala to na uproszczenie opisu metody działania bez poświęcania dokładności \pauza światło, które nie trafia w aktywną w danej chwili fotodiodę nie jest brane pod uwagę.
 
-Przerwanie któregokolwiek z takich promieni poprzez zasłonięcie odbiornika powoduje zmianę stanu na jego wyjściu. Fotodiody oświetlone dają na wyjściu stan niski, zaś nieoświetlone \ppauza wysoki.\\
+Przerwanie któregokolwiek z takich promieni poprzez zasłonięcie odbiornika powoduje zmianę stanu na jego wyjściu. Fotodiody oświetlone dają na wyjściu stan niski, zaś nieoświetlone \ppauza wysoki.
+
+Na podstawie powyższych informacji można określić następujące terminy:
+
+\begin{itemize}
+ \item \textit{prawdziwy pozytyw} \pauza promień zasłonięty i poprawnie odczytany przez odpowiadający mu odbiornik (stan wyjścia wysoki),
+ \item \textit{prawdziwy negatyw} \pauza promień niezasłonięty i poprawnie odczytany (stan wyjścia niski),
+ \item \textit{fałszywy pozytyw} \pauza promień zasłonięty, lecz odczytany jako niezasłonięty (stan wyjścia niski),
+ \item \textit{fałszywy negatyw} \pauza promień niezasłonięty, lecz odczytany jako zasłonięty (stan wyjścia wysoki).
+\end{itemize}
+
+Posłużą one w dalszej części pracy.\\
 
 \section{Model}
 
@@ -46,25 +57,25 @@ Dane o promieniach zbierane są przez mikrokontroler, opakowywane w ramki protok
 
 Wykorzystując te informacje można stworzyć \textit{heatmapę} prezentującą w graficzny sposób rozkład gęstości przecięć promieni zasłoniętych. Daje to możliwość wizualnego rozpoznania konturów obiektów znajdujących się wewnątrz ramki.
 
-Wygodnym sposobem wyboru kolorów heatmapy jest wykorzystanie modelu barw HSL, przy czym wielkościom $s$ i $l$ zostały przypisane stałe wartości: $s = 1$, $l = 0.5$, natomiast parametr $h$ został dobrany w taki sposób, aby zmieniał się od $240^{\circ}$ (niebieski) do $0^{\circ}$ (czerwony) i reprezentował tym odpowiednio ,,mało'' i ,,dużo'', przy czym dokładne wartości ze skali nie mają istotnego znaczenia, a jedynie ich względna wielkość.
+Wygodnym sposobem wyboru kolorów \textit{heatmapy} jest wykorzystanie modelu barw HSL, przy czym wielkościom $s$ i $l$ zostały przypisane stałe wartości: $s = 1$, $l = 0.5$, natomiast parametr $h$ został dobrany w taki sposób, aby zmieniał się od $240^{\circ}$ (niebieski) do $0^{\circ}$ (czerwony) i reprezentował tym odpowiednio ,,mało'' i ,,dużo'', przy czym dokładne wartości ze skali nie mają istotnego znaczenia, a jedynie ich względna wielkość.
 
-Heatmapa generowana jest w następujący sposób:
+\textit{Heatmapa} generowana jest w następujący sposób:
 \begin{enumerate}
  \item Scena, wnętrze reprezentacji ramki na komputerze, dzielona jest na kwadraty $A_{x,y}$ o zadanym boku $a$, a każdemu z nich przyporządkowywany jest licznik $C$ z początkową wartością $C_{i,j} = 0$,
  \item pobierane kolejno są dane o zasłoniętych promieniach dla każdego z modułów,
- \item dla każdego zasłoniętego promienia wyznaczany jest \textit{bounding box}, z dokładnością do $a$,
- \item dla każdego kwadrata z bounding boksa promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
+ \item dla każdego zasłoniętego promienia wyznaczana jest jego bryła otaczająca, z dokładnością do $a$,
+ \item dla każdego kwadratu z bryły otaczającej promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek, etap zaprezentowany na rysunku~\ref{fig:scene_intersections},
  \item jeśli promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o $1$,
- \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowana jest największa wartość licznika $C$, $C_{max}$, względem której skalowane są kolory heatmapy,
- \item dla każdego kwadrata $A_{i,j}$, jeśli $C_{i,j} > 0$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.
+ \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowana jest największa wartość licznika $C$, $C_{max}$, względem której skalowane są kolory \textit{heatmapy},
+ \item dla każdego kwadratu $A_{i,j}$, jeśli $C_{i,j} > 0$, rysowany jest w scenie kwadrat o wyznaczonym kolorze, etap zaprezentowany na rysunku~\ref{fig:scene_heatmap}.
 \end{enumerate}
 
-Wybrane kroki powyższego algorytmu prezentują rysunki \ref{fig:scene_intersections}, \ref{fig:scene_rays}, \ref{fig:scene_heatmap} oraz \ref{fig:scene_heatmap_overlay}.
+Rysunki \ref{fig:scene_rays} oraz \ref{fig:scene_heatmap_overlay} prezentują przykładowe dane wejściowe i~wyjściowe opisywanego algorytmu.
 
 \begin{sidewaysfigure}[tbh]
   \myfloatalign
   \vspace{0.085\textheight}
-  \subfloat[Wizualizacja sceny wraz z jednym promieniem, bounding boksem i wybranymi przecinanymi kwadratami]
+  \subfloat[Wizualizacja sceny wraz z jednym promieniem, bryłą otaczającą i wybranymi przecinanymi kwadratami]
   {\label{fig:scene_intersections}
   \def\svgwidth{0.47\linewidth}
   \includesvg{gfx/scene_intersections}} \quad
@@ -83,7 +94,8 @@ Wybrane kroki powyższego algorytmu prezentują rysunki \ref{fig:scene_intersect
   \caption[Algorytm konstrukcji heatmapy]{Algorytm konstrukcji heatmapy, $a$ = 10.}\label{fig:scene_heatmap_algorithm}
 \end{sidewaysfigure}
 
-Ze względu na możliwość badania jedynie obecności lub braku promienia, system jest w stanie raportować w najlepszym przypadku otoczkę wypukłą obiektów. Otoczka wypukła zbioru punktów $A$, oznaczana zwykle $\mbox{conv} A$ to najmniejszy wypukły zbiór punktów zawierający $A$.\\
+Ze względu na możliwość badania jedynie przerwania promienia, system nie umożliwia wykrywania kształtów wklęsłych. Raportowany kształt będzie stanowił otoczkę wypukłą obiektów.
+Otoczka wypukła zbioru punktów $A$, oznaczana zwykle $\mbox{conv} A$ to najmniejszy wypukły zbiór punktów zawierający $A$.\\
 
 \clearpage
 
@@ -91,7 +103,7 @@ Na potrzeby testów i prezentacji stworzyłem dodatkową funkcjonalność pozwal
 
 Większość przedstawianych w tym rozdziale sytuacji będzie opierać się o fikcyjne przeszkody pod postacią okręgów.\\
 
-Wykorzystując opisany wcześniej algorytm generowania heatmapy można już zaimplementować system wykrywania przeszkód. Istotnym dla działania programu jest wybór wielkości $a$. Mniejsze wartości zwiększają rozdzielczość kosztem większej ilości danych do przetworzenia, zaś większe mogą zapewnić mniejszą podatność na szumy (fałszywe pozytywy i negatywy). Wpływ wielkości $a$ na algorytm konstruujący heatmapę prezentuje rysunek~\ref{fig:scene_heatmap_size}.
+Wykorzystując opisany wcześniej algorytm generowania \textit{heatmapy} można już zaimplementować system wykrywania przeszkód. Istotnym dla działania programu jest wybór wielkości $a$. Mniejsze wartości zwiększają rozdzielczość kosztem większej ilości danych do przetworzenia, zaś większe mogą zapewnić mniejszą podatność na szumy (fałszywe pozytywy i negatywy). Wpływ wielkości $a$ na algorytm konstruujący \textit{heatmapę} prezentuje rysunek~\ref{fig:scene_heatmap_size}.
 
 \begin{sidewaysfigure}[tbh]
   \myfloatalign
@@ -116,21 +128,21 @@ Wykorzystując opisany wcześniej algorytm generowania heatmapy można już zaim
 \end{sidewaysfigure}
 
 
-Jak widać, dla małych wartości $a$, miejsca przecięć promieni zakrytych wartość licznika $C$ jest niewiele większa od wartości w okolicach nadajników, gdzie zbiega się wiele promieni. Wraz ze zwiększaniem $a$ charakterystyka heatmapy zmienia się na rzecz lepszego uwidocznienia zasłaniającego obiektu, jednak maleje przy tym dostępna rozdzielczość wykrywania.\\
+Jak widać, dla małych wartości $a$, miejsca przecięć promieni zakrytych wartość licznika $C$ jest niewiele większa od wartości w okolicach nadajników, gdzie zbiega się wiele promieni. Wraz ze zwiększaniem $a$ charakterystyka \textit{heatmapy} zmienia się na rzecz lepszego uwidocznienia zasłaniającego obiektu, jednak maleje przy tym dostępna rozdzielczość wykrywania.\\
 
 \section{Ulepszona heatmapa}
 
-Problem małych wielkości licznika $C$ rozwiązałem ulepszając pierwotny algorytm generowania heatmapy wykorzystując także dane o prawdziwych negatywach, tj. promieniach, o których wiadomo, że powinny być widoczne, jeśli nie napotkały na przeszkodę.
+Problem małych wielkości licznika $C$ rozwiązałem ulepszając pierwotny algorytm generowania \textit{heatmapy} wykorzystując także dane o prawdziwych negatywach, tj. promieniach, o których wiadomo, że powinny być widoczne, jeśli nie napotkały na przeszkodę.
 
 Ulepszony algorytm wygląda następująco (zmiany zostały wyróżnione):
 \begin{enumerate}
  \item Scena, wnętrze reprezentacji ramki na komputerze, dzielona jest na kwadraty $A_{x,y}$ o zadanym boku $a$, a każdemu z nich przyporządkowywany jest licznik $C$ z początkową wartością $C_{i,j} = 0$,
  \item pobierane kolejno są dane o \textit{wszystkich} promieniach dla każdego z modułów,
- \item dla \textit{każdego} uzyskanego promienia wyznaczany jest bounding box, z dokładnością do $a$,
- \item dla każdego kwadrata z bounding boksa promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
+ \item dla \textit{każdego} uzyskanego promienia wyznaczana jest jego bryła otaczająca, z dokładnością do $a$,
+ \item dla każdego kwadratu z bryły otaczającej promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
  \item jeśli \textit{zasłonięty} promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o $1$, \textit{jeśli promień był prawdziwym negatywem, to licznik $C_{i,j}$ jest dekrementowany o $1$},
- \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowane są \textit{ekstrema} licznika $C$: $C_{max}$ i $C_{min}$, względem których skalowane są kolory heatmapy,
- \item dla \textit{każdego} kwadrata $A_{i,j}$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.\\
+ \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowane są \textit{ekstrema} licznika $C$: $C_{max}$ i $C_{min}$, względem których skalowane są kolory \textit{heatmapy},
+ \item dla \textit{każdego} kwadratu $A_{i,j}$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.\\
 \end{enumerate}
 
 Wprowadzenie tych zmian powoduje duży wzrost ilości wykonywanych obliczeń, nadal są to jednak obliczenia proste i szybkie, a także łatwo wektoryzowalne, więc małym kosztem znacząco podniosłem jakość otrzymywanych wyników.
