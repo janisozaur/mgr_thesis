@@ -26,9 +26,9 @@ Ramkę w całej okazałości, zamontowaną na wzorcowym monitorze pokazuje rysun
 
 \afterpage{\clearpage}
 
-\section{Moduły nadawczo\ppauza{}odbiorcze}
+\section{Moduły nadawczo\ppauza{}odbiorcze.}
 
-Do ramy przymocowanych jest 20 modułów \pauza po 4 na krótsze i po 6~na dłuższe boki.
+Do ramy przymocowanych jest 20 modułów \pauza po 4 na krótsze i po 6~na dłuższe boki. Moduły, ich rozmieszczenie i~sposób montażu prezentuje rysunek~\ref{fig:modules}.
 
 Każdy z jednakowych modułów zawiera komplet elementów do pełnienia funkcji odbiornika oraz nadajnika:
 \begin{itemize}
@@ -37,6 +37,17 @@ Każdy z jednakowych modułów zawiera komplet elementów do pełnienia funkcji 
  \item ośmioportowy trzystanowy bufor (74LS541),
  \item zestaw złącz, oporników wymaganych do funkcjonowania powyższych elementów.
 \end{itemize}
+
+\begin{figure}[tb]
+ \centering
+ \makebox[\textwidth][l]{
+  \resizebox{.8\largefigure}{!}{
+   \includegraphics[width=\textwidth]{gfx/modules}
+  }
+ }
+ \caption{Moduły nadawczo\ppauza{}odbiorcze}
+ \label{fig:modules}
+\end{figure}
 
 Moduły połączone zostały ośmiokanałowym interfejsem równoległym, dodatkowo z dwiema żyłami niosącymi zasilanie oraz osobnymi przewodami z sygnałami chip select (\textsmaller{\textoverline{CS}}) dla bufora oraz diody świecącej (\textsmaller{CS}).\\
 
@@ -75,7 +86,7 @@ Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawia
   \label{fig:4515_pcb}
 \end{figure}
 
-Wszystkie płytki PCB\graffito{PCB, printed circuit board \ppauza płytka z układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
+Wszystkie płytki PCB\graffito{PCB, printed circuit board \ppauza płytka z~układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
 
 Stworzony sprzęt przeszedł kilka zmian: zarówno mikroprocesor jak i elementy konstrukcji były kilkukrotnie wymieniane.\\
 
@@ -103,7 +114,7 @@ Płytkę tę prezentuje rysunek~\ref{fig:msp430_exp}.
  \label{fig:msp430_ez430}
 \end{figure}
 
-Duże problemy okazał się powodować moduł komunikacji szeregowej UART, który operował w standardzie RS232/TTL\graffito{TTL, transistor\ppauza{}to\ppauza{}transistor logic, poziomy napięć i prądów przystosowane do niedługich połączeń pomiędzy układami}.
+Duże problemy okazał się powodować moduł komunikacji szeregowej UART, który operował w standardzie RS232/TTL\graffito{TTL, transistor\ppauza{}to\ppauza{}transistor logic, poziomy napięć i~prądów przystosowane do niedługich połączeń pomiędzy układami}.
 Po podłączeniu adaptera USB\ppauza{}RS232 opartego o renomowany układ FTDI FT2232C okazało się w testach, że podczas dużego obciążenia hosta, pojedyncze bity ramki RS232 mogą się ,,zgubić'', tj. jedynki sporadycznie zastępowane były zerami.
 Ze względu na spodziewany charakter wykorzystywania pracy, np. podczas gier, oczekiwane było poprawne działanie także w warunkach wysokiego obciążenia, co dyskwalifikowało takie rozwiązanie.\\
 
@@ -154,7 +165,7 @@ Rysunek~\ref{fig:second_interface} przedstawia drugą wersję płytki interfejso
 
 \begin{figure}
  \centering
- \makebox[\textwidth][r]{
+ \makebox[\textwidth][l]{
   \resizebox{.8\largefigure}{!}{
    \includegraphics[width=\textwidth]{gfx/first_interface}
   }
