@@ -14,11 +14,23 @@ Podczas projektowania powstało kilka dodatkowych założeń, które sprzęt pow
 
 Urządzenie składa się z aluminiowej ramy, złożonej z czterech kątowników, z wywierconymi otworami na diody, fotodiody i elementy mocowania. Rama została zaprojektowana, aby pasowała do posiadanego monitora o przekątnej 24''.
 
-\section{Moduły}
+Ramkę w całej okazałości, zamontowaną na wzorcowym monitorze pokazuje rysunek~\ref{fig:frame_full}.
 
-Do ramy przymocowanych jest 20 modułów \pauza po 4 na krótsze i po 6 na dłuższe boki.
+\begin{sidewaysfigure}[!htb]
+  \myfloatalign
+  \vspace{0.1\textheight}
+  \includegraphics[width=\textwidth]{gfx/frame_full}
+  \caption{Ramka zamontowana na docelowym monitorze.}
+  \label{fig:frame_full}
+\end{sidewaysfigure}
 
-Każdy z jednakowych modułów zawiera:
+\afterpage{\clearpage}
+
+\section{Moduły nadawczo\ppauza{}odbiorcze}
+
+Do ramy przymocowanych jest 20 modułów \pauza po 4 na krótsze i po 6~na dłuższe boki.
+
+Każdy z jednakowych modułów zawiera komplet elementów do pełnienia funkcji odbiornika oraz nadajnika:
 \begin{itemize}
  \item diodę emitującą światło w paśmie podczerwieni (TSAL6400),
  \item 8 fotodiod reagujących na światło wymienionej wyżej diody,
@@ -28,7 +40,7 @@ Każdy z jednakowych modułów zawiera:
 
 Moduły połączone zostały ośmiokanałowym interfejsem równoległym, dodatkowo z dwiema żyłami niosącymi zasilanie oraz osobnymi przewodami z sygnałami chip select (\textsmaller{\textoverline{CS}}) dla bufora oraz diody świecącej (\textsmaller{CS}).\\
 
-Odstęp pomiędzy fotodiodami wynosi 10mm, natomiast między nadajnikami 80mm, co przekłada się na charakterystykę modułów: 8 odbiorników w równych odstępach, 1 nadajnik po środku.
+Odstęp pomiędzy fotodiodami wynosi 10mm, natomiast między nadajnikami 80mm, co przekłada się na charakterystykę modułów: 8~odbiorników w równych odstępach, 1 nadajnik po środku.
 Średnica odbiorników wynosi 3mm, zaś nadajników:
 \begin{itemize}
  \item w pierwotnym planie też 3mm, rozmieszczone jeden nad drugim w celu zwiększenia ich widoczności,
@@ -40,23 +52,28 @@ Dodatkowo, nadajniki przesunięte są o 5mm względem rastra wyznaczonego przez 
 Moduły zostały zaprojektowane w taki sposób, aby rozmieszczenie fotodiod i nadajników było jednolite, bez względu na granice między modułami. Każdy moduł posiada 4 dodatkowe otwory służace przymocowaniu ich do ramki za pomocą śrub.\\
 
 Otwory na moduły wiercone były w miękkim aluminium wykorzystując wzorzec ze stali, którego wykonanie zostało zlecone zewnętrznej firmie.
-Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiorniki, elementy mocowania), ale także dwa elementy mocujące poprzedniego modułu, co pozwalało na wygodną synchronizację otworów podczas wiercenia. Wzorzec przedstawiony jest na rysunku \ref{fig:holes_master}. Po prawej stronie widać dwa otwory synchronizacyjne (górny \ppauza montażowy, dolny \ppauza fotodioda), u góry po środku otwory nadajników.\\
+Wzorzec ten zawierał otwory nie tylko dla jednego modułu (nadajniki, odbiorniki, elementy mocowania), ale także dwa elementy mocujące poprzedniego modułu, co pozwalało na wygodną synchronizację otworów podczas wiercenia. Wzorzec wiertniczy przedstawiony jest na rysunku \ref{fig:holes_master}. Po prawej stronie widać dwa otwory synchronizacyjne (górny $A_0$ \ppauza montażowy, dolny $B$ \ppauza fotodioda), u góry po środku otwory ($C$) nadajników, otwory $A_1$ do $A_4$ to otwory montażowe, pozostałe to miejsca na fotodiody.\\
 
 \begin{figure}
  \centering
- \makebox[\textwidth][l]{
-  \resizebox{.9\largefigure}{!}{
-    \def\svgwidth{0.9\largefigure}
+ \makebox[\textwidth][r]{
+    \def\svgwidth{\textwidth}
     \includesvg{gfx/holes_master}
   }
- }
  \caption{Wzorzec do wiercenia otworów.}
  \label{fig:holes_master}
 \end{figure}
 
-Dwie płytki drukowane, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję demultipleksera portów \pauza układy te to dekodery 4\ppauza{}do\ppauza{}16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów niż byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio.
+Dwie dwustronne płytki drukowane, przedstawione na rysunku \ref{fig:4515_pcb}, każda z zestawem układów 74HC4514 i 74HC4515, pełnią funkcję demultipleksera portów \pauza układy te to dekodery 4\ppauza{}do\ppauza{}16 z zapadkami (\textsl{latches}), które umożliwiają komunikację z modułami za pomocą znacznie zredukowanej ilości pinów niż byłaby wymagana, gdyby każdy moduł podłączać bezpośrednio.
 Zastosowanie takiego rozwiązania jest szybsze niż w przypadku interfejsu szeregowego, np. takiego jak I\textsuperscript{2}C lub SPI, jednak pociąga za sobą konieczność poprowadzenia sygnału \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} do każdego modułu osobno zamiast zintegrowania go w magistrali łączącej wszystkie moduły wygodną do podłączania tasiemką.
 Konieczność instalowania w każdym module dekodera takiego interfejsu, ustawiania adresów logicznych modułów, chociaż pozwalałaby na dalsze rozszerzanie ramki o kolejne moduły, zwiększałaby koszty oraz wymagany nakład pracy, rozumianej zarówno przez tworzone oprogramowanie jak i ,,koszt'' działania programu, tj. czasu wymaganego do obsługi wybranego protokołu, zaważyły o ostatecznym wyborze rozwiązania równoległego.
+
+\begin{figure}
+  \centering
+  \includegraphics{gfx/4515_drvpcb}
+  \caption{Schemat płytki drukowanej z układami 4515/4514.}
+  \label{fig:4515_pcb}
+\end{figure}
 
 Wszystkie płytki PCB\graffito{PCB, printed circuit board \ppauza płytka z układem drukowanym.}, z wyjątkiem modułu mikrokontrolera, zostały zaprojektowane i wykonane wyłącznie w celu realizacji pracy.
 
@@ -122,7 +139,7 @@ Z powodu nadal niedostatecznej ilości mocy diod, wymienione zostały na modele 
 
 \section{Interfejs ramka $\leftrightarrow$ mikrokontroler}
 
-Interfejs zapewniający komunikację pomiędzy mikrokontrolerem, a ramką przeszedł tylko jedną wymianę, mającą na celu przede wszystkim wspomniane już ograniczenie ilości wymaganych pinów do obsługi.
+Interfejs zapewniający komunikację między mikrokontrolerem, a~ram\-ką przeszedł tylko jedną wymianę, mającą na celu przede wszystkim wspomniane już ograniczenie ilości wymaganych pinów do obsługi.
 
 Pierwsza wersja oparta była na układach 74LS139 (podwójny selektor 1\ppauza{}z\ppauza{}4) oraz 74LS14 (inwerter), posiadała także zestaw diod LED i oporników pomocnych w debugowaniu. Działanie tego urządzenia było bardzo proste, polegało na wyborze odpowiedniego modułu (nadawczego i odbiorczego) poprzez ustawienie sygnałów \textsmaller{CS} oraz \textsmaller{\textoverline{CS}} po wybraniu danego układu oraz ,,wysłania'' do niego adresu jednej z czterech linii wyjściowych. Sygnał \textsmaller{\textoverline{CS}} uzyskany został przez zastosowanie inwertera 74LS14.
 
@@ -137,7 +154,7 @@ Rysunek~\ref{fig:second_interface} przedstawia drugą wersję płytki interfejso
 
 \begin{figure}
  \centering
- \makebox[\textwidth][l]{
+ \makebox[\textwidth][r]{
   \resizebox{.8\largefigure}{!}{
    \includegraphics[width=\textwidth]{gfx/first_interface}
   }
@@ -162,13 +179,3 @@ Chociaż 20 użytych modułów można zaadresować za pomocą 5\ppauza{}bitowej 
 Ich konstrukcja, choć trywialna, dodawałaby zbędnego skomplikowania oraz kosztów, dając w zamian niewiele.
 Dodatkowo, posiadanie dedykowanych linii wybierających pozwala na przełączenie urządzenia w tryb ,,stand-by'', co w tym wypadku oznacza wyłączenie zarówno nadawania jak i odbierania.
 Podwójne elementy sterujące umożliwiają także ograniczenie długości potrzebnych przewodów, rozmiarów płytki (ze względu na zmniejszoną ilość wyjść) oraz konieczność mniejszej ingerencji w urządzenie w razie awarii.\\
-
-Ramkę w całej okazałości, zamontowaną na wzorcowym monitorze pokazuje rysunek~\ref{fig:frame_full}.
-
-\begin{sidewaysfigure}[tbh]
-  \myfloatalign
-  \vspace{0.1\textheight}
-  \includegraphics[width=\textwidth]{gfx/frame_full}
-  \caption{Ramka zamontowana na docelowym monitorze.}
-  \label{fig:frame_full}
-\end{sidewaysfigure}

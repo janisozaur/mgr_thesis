@@ -49,10 +49,10 @@
      fit-margin-right="2"
      fit-margin-bottom="2"
      inkscape:zoom="0.89702926"
-     inkscape:cx="289.12819"
-     inkscape:cy="178.90011"
-     inkscape:window-x="175"
-     inkscape:window-y="155"
+     inkscape:cx="584.38302"
+     inkscape:cy="230.85024"
+     inkscape:window-x="130"
+     inkscape:window-y="97"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg3073" />
   <path
@@ -155,4 +155,91 @@
      id="path3115"
      d="m 793.24007,56.423987 -1.675,0.165 -1.612,0.489 -1.485,0.794 -1.301,1.068 -1.068,1.301 -0.794,1.485 -0.489,1.612 -0.165,1.675 0.165,1.676 0.489,1.611 0.794,1.485 1.068,1.302 1.301,1.068 1.485,0.793 1.612,0.489 1.675,0.165 1.676,-0.165 1.611,-0.489 1.485,-0.793 1.302,-1.068 1.068,-1.302 0.794,-1.485 0.488,-1.611 0.165,-1.676 -0.165,-1.675 -0.488,-1.612 -0.794,-1.485 -1.068,-1.301 -1.302,-1.068 -1.485,-0.794 -1.611,-0.489 -1.676,-0.165 z"
      style="fill:#000000;fill-opacity:1;stroke:#333333;stroke-width:0.72000003" />
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="791.0556"
+     y="45.645023"
+     id="text3122"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3124"
+       x="791.0556"
+       y="45.645023">A<tspan
+   style="font-size:20.80029297px;baseline-shift:sub"
+   id="tspan3142">0</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="783.02911"
+     y="247.19922"
+     id="text3126"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3128"
+       x="783.02911"
+       y="247.19922">B</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="381.70438"
+     y="50.996017"
+     id="text3130"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3132"
+       x="381.70438"
+       y="50.996017">C</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="68.67112"
+     y="54.563347"
+     id="text3134"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3136"
+       x="68.67112"
+       y="54.563347">A<tspan
+   style="font-size:20.80029297px;baseline-shift:sub"
+   id="tspan3144">2</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="101.66892"
+     y="217.76872"
+     id="text3138"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3140"
+       x="101.66892"
+       y="217.76872">A<tspan
+   style="font-size:20.80029297px;baseline-shift:sub"
+   id="tspan3146">3</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="710.25897"
+     y="34.051193"
+     id="text3148"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3150"
+       x="710.25897"
+       y="34.051193">A<tspan
+   style="font-size:20.80029297px;baseline-shift:sub"
+   id="tspan3152">1</tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+     x="679.57648"
+     y="207.06673"
+     id="text3154"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3156"
+       x="679.57648"
+       y="207.06673">A<tspan
+   style="font-size:20.80029297px;baseline-shift:sub"
+   id="tspan3158">4</tspan></tspan></text>
 </svg>
