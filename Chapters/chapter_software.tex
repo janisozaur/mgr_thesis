@@ -209,7 +209,7 @@ Deklarację pewnej minimalnej klasy zawierającej sloty prezentuje listing \ref{
 \end{listing}
 
 Połączenie emitera ze słuchaczem następuje poprzez wywołanie metody \verb|connect| klasy \verb|QObject|, której argumentami są obiekty nadający i~odbierający, a także nazwy łączonych metod.
-Sygnatura slotu i sygnału musi być taka sama, z wyjątkiem zwracanego typu.
+Sygnatura slotu i~sygnału musi być taka sama, z wyjątkiem zwracanego typu.
 
 Użyteczną cechą jest możliwość podłączenia sygnału do sygnału, dzięki czemu zostanie wywołany drugi z sygnałów, a w efekcie podłączone do niego sloty.
 
@@ -272,7 +272,7 @@ Istotne jest, że komunikacja z urządzeniem zachodzi w osobnym wątku, nie obci
 
 Charakterystyka używanego portu szeregowego wymaga ciągłego odpytywania o nowe dane, w przeciwnym wypadku mogą one zostać utracone.
 
-Pętla taka w głównym wątku wpływałaby negatywnie na obsługę wydarzeń związanych z obsługą interfejsu, co mogłoby skutkować w ostateczności oznaczeniem przez system aplikacji jako nieodpowiadającej na zdarzenia.
+Pętla taka w głównym wątku wpływałaby negatywnie na obsługę wydarzeń związanych z obsługą interfejsu, co mogłoby skutkować w~ostateczności oznaczeniem przez system aplikacji jako nieodpowiadającej na zdarzenia.
 
 Podejście takie wymaga jednak synchronizacji żądań i odpowiedzi, co zostało wykonane z pomocą wzorca producent\pauza{}konsument, gdzie bufor żądań strzeżony jest dwoma semaforami\graffito{Semafor to licznik z dostępem atomowym służący do synchronizacji wątków}: piszącym i czytającym.
 

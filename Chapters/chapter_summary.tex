@@ -1,9 +1,24 @@
 %*****************************************
-\chapter{Wnioski}\label{ch:summary}
+\chapter{Podsumowanie}\label{ch:summary}
 %*****************************************
 
-Wyniki testów, szczególnie ostatnie rysunki ukazujące stopień zaszumienia danych wskazują, że system nie jest wystarczająco stabilny, aby śledzić ruch palców.
+Celem pracy było stworzenie systemu pozwalającego na interakcję z~komputerem poprzez śledzenie ruchu palców.
 
-Jak pokazały testy, problem ma swoje źródło w sprzęcie, którego stopniowe ulepszanie nie przyniosło dostatecznych rezultatów, a dalszy jego rozwój pociągałby za sobą duże koszta, lecz przede wszystkim wkład ogromnych ilości czasu zanim osiągnięty zostałby sukces.
+Chociaż napisane w tym celu oprogramowanie jest sprawne i wypełnia postawione założenia, część sprzętowa wskutek napotkanych podczas realizacji nieprzewidzianych ograniczeń nie dostarcza danych wystarczającej jakości.
 
-Praca nad tym systemem stanowiła kopalnię doświadczenia z zakresu zainteresowań, utwierdziła też mnie w przekonaniu do realizacji dalszych projektów tego typu.
+Próby obejścia występujących ograniczeń poprzez stopniowe, iteracyjne ulepszanie sprzętu poprawiało osiągane rezultaty, nadal jednak nie na tyle, aby usunąć z danych wszystkie szumy.
+
+Praca nad tym systemem stanowiła kopalnię doświadczenia z zakresu zainteresowań, pozostawia jednocześnie furtkę do dalszego rozwoju.
+W miarę dostępnego czasu i funduszy, możliwe przyszłe kroki obejmują:
+
+\begin{aenumerate}
+ \item zastosowanie mocniejszych diod,
+ \item zastosowanie bardziej selektywnych fotodiod,
+ \item zastosowanie filtra podczerwonego,
+ \item wykorzystanie diod i fotodiod pracujących w spektrum bardziej oddalonym od światła widzialnego.
+\end{aenumerate}
+
+Po osiągnięciu danych o dostatecznie wysokiej wartości współczynnika sygnału do szumu możliwą ścieżką rozwoju oprogramowania jest próba przypisania jego części na mikrokontroler (w~celu odciążenia komputera) lub napisanie sterownika urządzenia wejściowego.
+Możliwości te nie wykluczają się, idealnym wyjściem było by połączenie obu tych podejść.
+
+System w swojej obecnej postaci nie mógłby konkurować z istniejącymi rozwiązaniami, jest jednak od nich różny w stopniu, który każe przypuszczać, że może znaleźć swoje zastosowanie.

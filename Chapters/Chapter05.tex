@@ -132,7 +132,7 @@ Jak widać, dla małych wartości $a$, miejsca przecięć promieni zakrytych war
 
 \section{Ulepszona heatmapa}
 
-Problem małych wielkości licznika $C$ rozwiązałem ulepszając pierwotny algorytm generowania \textit{heatmapy} wykorzystując także dane o prawdziwych negatywach, tj. promieniach, o których wiadomo, że powinny być widoczne, jeśli nie napotkały na przeszkodę.
+Problem małych wielkości licznika $C$ rozwiązałem ulepszając pierwotny algorytm generowania \textit{heatmapy}, wykorzystując także dane o~prawdziwych negatywach, tj. promieniach, o których wiadomo, że powinny być widoczne, jeśli nie napotkały na przeszkodę.
 
 Ulepszony algorytm wygląda następująco (zmiany zostały wyróżnione):
 \begin{enumerate}
@@ -142,10 +142,10 @@ Ulepszony algorytm wygląda następująco (zmiany zostały wyróżnione):
  \item dla każdego kwadratu z bryły otaczającej promienia sprawdzane jest, czy promień przechodzi przez ten kwadrat, tj. czy przecina którąkolwiek z jego ścianek,
  \item jeśli \textit{zasłonięty} promień przecina kwadrat $A_{i,j}$, to wartość jego licznika $C_{i,j}$ jest inkrementowana o $1$, \textit{jeśli promień był prawdziwym negatywem, to licznik $C_{i,j}$ jest dekrementowany o $1$},
  \item po przetworzeniu wszystkich aktualnie dostępnych danych, znajdowane są \textit{ekstrema} licznika $C$: $C_{max}$ i $C_{min}$, względem których skalowane są kolory \textit{heatmapy},
- \item dla \textit{każdego} kwadratu $A_{i,j}$, rysowany jest w scenie kwadrat o wyznaczonym kolorze.\\
+ \item dla \textit{każdego} kwadratu $A_{i,j}$, rysowany jest w scenie kwadrat o~wyznaczonym kolorze.\\
 \end{enumerate}
 
-Wprowadzenie tych zmian powoduje duży wzrost ilości wykonywanych obliczeń, nadal są to jednak obliczenia proste i szybkie, a także łatwo wektoryzowalne, więc małym kosztem znacząco podniosłem jakość otrzymywanych wyników.
+Wprowadzenie tych zmian powoduje duży wzrost ilości wykonywanych obliczeń, nadal są to jednak obliczenia proste, szybkie, a~także łatwo wektoryzowalne, więc małym kosztem znacząco podniosłem jakość otrzymywanych wyników.
 
 Rezultaty ulepszonego algorytmu prezentuje rysunek~\ref{fig:scene_heatmap2_size}.
 

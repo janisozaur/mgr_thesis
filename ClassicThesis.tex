@@ -73,6 +73,7 @@
 \includepdf[pagecommand={\thispagestyle{empty}}]{FrontBackmatter/front_pl.pdf}
 \include{FrontBackmatter/Titlepage}
 \include{FrontBackmatter/Titleback}
+\cleardoublepage\include{FrontBackmatter/Contents}
 \pagestyle{scrheadings}
 %********************************************************************
 % Mainmatter
@@ -89,22 +90,18 @@
 \include{Chapters/Chapter05}
 \include{Chapters/chapter_software}
 \include{Chapters/chapter_tests}
-\include{Chapters/chapter_results}
+%\include{Chapters/chapter_results}
 \include{Chapters/chapter_summary}
 %\include{multiToC} % <--- just debug stuff, ignore for your documents
 % ********************************************************************
 % Backmatter
-%*******************************************************
-%\appendix
-\cleardoublepage
-%\part{Załącznik}
-\include{Chapters/Chapter0A}
 %********************************************************************
 % Other Stuff in the Back
 %*******************************************************
 \cleardoublepage\include{FrontBackmatter/Bibliography}
+\appendix
+\cleardoublepage\include{Chapters/Chapter0A}
 \cleardoublepage\include{FrontBackmatter/Colophon}
-\cleardoublepage\include{FrontBackmatter/Contents}
 \cleardoublepage\pdfbookmark[0]{Oświadczenie}{declaration}\includepdf[pagecommand={\thispagestyle{empty}}]{FrontBackmatter/declaration.pdf}
 % ********************************************************************
 % Game Over: Restore, Restart, or Quit?
